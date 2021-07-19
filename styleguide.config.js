@@ -32,6 +32,7 @@ module.exports = {
   skipComponentsWithoutExample: true,
   getExampleFilename,
   sections: [
+    { name: 'DEMO', content: 'src/demo.md' },
     {
       name: '组件',
       components: 'src/**/*.tsx',
