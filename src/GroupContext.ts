@@ -7,10 +7,11 @@ import { EventType, GroupContext, GroupState } from './types';
 export function createGroupContext<T extends {}>(initial?: T): GroupContext<T> {
   const listenersMap = {
     change: new Set<Function>(),
+    invalid: new Set<Function>(),
     submit: new Set<Function>(),
   };
-  const groupState: GroupState<T> = { initial, value: initial };
-  const context = observable(groupState);
+  const groupState: GroupState<T> = { initial, value: initial, meta: [] };
+  const context = observable(groupState) as GroupContext<T>;
 
   function emit(type: EventType, ...rest: any[]) {
     const listeners = Array.from(listenersMap[type]);
@@ -34,7 +35,8 @@ export function createGroupContext<T extends {}>(initial?: T): GroupContext<T> {
     emit,
 
     hasFieldValue(path) {
-      if (!path || !get(path, 'length')) return true;
+      const isEmptyPath = !path || !get(path, 'length');
+      if (isEmptyPath) return true;
       return context.getState((root) => has(root.value, path));
     },
     getFieldValue(path) {
@@ -52,14 +54,48 @@ export function createGroupContext<T extends {}>(initial?: T): GroupContext<T> {
       });
     },
 
+    registerField(sym) {
+      context.setState((root) => {
+        root.meta.push({ sym });
+      });
+      return () => context.unregisterField(sym);
+    },
+    unregisterField(sym) {
+      context.setState((root) => {
+        root.meta = root.meta.filter((meta) => meta.sym !== sym);
+      });
+    },
+
+    getFieldsMeta(syms) {
+      return context.getState((root) =>
+        root.meta.filter((item) => !syms || syms.includes(item.sym)),
+      );
+    },
+    setFieldMeta(sym, meta) {
+      return context.setState((root) => {
+        root.meta = root.meta.map((item) => (item.sym === sym ? meta : item));
+      });
+    },
+
     reset() {
       context.setState((state) => {
         state.value = state.initial;
       });
     },
+    async validate() {
+      const metas = context.getState((root) => root.meta);
+      await Promise.all(metas.map((meta) => meta.validate?.()));
+    },
     async submit() {
       const values = context.state.value;
-      await emit('submit', values);
+      await context.validate();
+      const metas = context.getState((root) => root.meta);
+      const errorFields = metas.filter((meta) => meta.errors?.length);
+      if (errorFields.length) {
+        await emit('invalid', errorFields);
+      } else {
+        await emit('submit', values);
+      }
     },
   };
 

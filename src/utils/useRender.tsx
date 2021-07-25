@@ -9,10 +9,11 @@ export function useRender<Value>(
   props: FieldProps<Value>,
 ) {
   const { path, initial, children } = props;
+  const { sym, errors } = useSelector(context, () => context.getMeta() || {});
   const value = useSelector(context, () => context.getValue());
   const control = getOnlyChild(children);
 
-  const data = { path, initial, value, control };
+  const data = { sym, path, initial, value, errors, control };
   const render = children instanceof Function ? children : defaultRender;
   return render(context, data) as React.ReactElement;
 }

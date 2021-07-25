@@ -1,7 +1,7 @@
 import React from 'react';
 import shallowEqual from 'shallowequal';
 import { useGroupContext } from './GroupContext';
-import { ControlProps, GroupContext } from './types';
+import { ControlProps, FieldMeta, GroupContext } from './types';
 import { context } from './utils/context';
 
 const { Provider } = context;
@@ -9,13 +9,14 @@ const { Provider } = context;
 export type GroupProps<T> = ControlProps<T> & {
   context?: GroupContext<T>;
   initial?: T;
+  onInvalid?: (errorFields: FieldMeta[]) => void | Promise<void>;
   onSubmit?: (values: T) => void | Promise<void>;
   children?: React.ReactNode;
 };
 
 export function Group<T>(props: GroupProps<T>) {
   const { context, initial, value, children = null } = props;
-  const { onChange, onSubmit } = props;
+  const { onChange, onInvalid, onSubmit } = props;
 
   const groupContext = useGroupContext(context, initial);
 
@@ -50,6 +51,12 @@ export function Group<T>(props: GroupProps<T>) {
       return groupContext.on('change', onChange);
     }
   }, [groupContext, onChange]);
+
+  React.useEffect(() => {
+    if (onInvalid instanceof Function) {
+      return groupContext.on('invalid', onInvalid);
+    }
+  }, [groupContext, onInvalid]);
 
   React.useEffect(() => {
     if (onSubmit instanceof Function) {

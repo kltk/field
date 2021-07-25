@@ -13,15 +13,29 @@ function Input(props) {
 
 const context = useGroupContext();
 const [state, setState] = React.useState();
+const [errorFields = [], setErrorFields] = React.useState();
 
 <>
   <Form
     context={context}
     onChange={(values) => console.log('change', values)}
     onReset={() => console.log('reset')}
-    onSubmit={(values) => setState(values)}
+    onInvalid={(errors) => {
+      setErrorFields(errors);
+    }}
+    onSubmit={(values) => {
+      setErrorFields([]);
+      setState(values);
+    }}
   >
-    <Field path="username">
+    <Field
+      path="username"
+      validate={(field, value) => {
+        if (!value) {
+          throw new Error('username is required');
+        }
+      }}
+    >
       <Input placeholder="username" />
     </Field>
     <Field path="password">
@@ -30,6 +44,16 @@ const [state, setState] = React.useState();
     <button type="submit">submit</button>
     <button type="reset">reset</button>
   </Form>
-  <div>{JSON.stringify(state)}</div>
+  {errorFields.length ? (
+    <ol>
+      {errorFields.map((m, index) =>
+        m.errors.map((err, index2) => (
+          <li key={`${index}-${index2}`}>{(err && err.message) || err}</li>
+        )),
+      )}
+    </ol>
+  ) : (
+    <div>{JSON.stringify(state)}</div>
+  )}
 </>;
 ```

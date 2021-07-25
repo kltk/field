@@ -10,9 +10,9 @@ export type FormProps<T> = Assign<
 
 export function Form<T>(props: FormProps<T>) {
   const { context, initial, value, children, ...rest } = props;
-  const { onChange, onReset, onSubmit, ...formRest } = rest;
+  const { onChange, onReset, onInvalid, onSubmit, ...formRest } = rest;
   const groupContext = useGroupContext(context);
-  const groupProps = { initial, value, onChange, onSubmit };
+  const groupProps = { initial, value, onChange, onInvalid, onSubmit };
   const handleReset = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
