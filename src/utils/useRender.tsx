@@ -8,12 +8,16 @@ export function useRender<Value>(
   context: FieldContext,
   props: FieldProps<Value>,
 ) {
-  const { path, initial, children } = props;
+  const { path, initial, dependencies = [], children } = props;
   const { sym, errors } = useSelector(context, () => context.getMeta() || {});
   const value = useSelector(context, () => context.getValue());
   const control = getOnlyChild(children);
 
   const disabled = useSelector(context, (root) => root.disabled);
+
+  useSelector(context, () =>
+    dependencies.map((path) => context.getFieldValue(path)),
+  );
 
   const data = { sym, path, initial, value, disabled, errors, control };
   const render = children instanceof Function ? children : defaultRender;

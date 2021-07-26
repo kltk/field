@@ -9,6 +9,7 @@ export type FieldProps<Value> = {
   path: NamePath;
   initial?: Value;
   validate?: (context: FieldContext, value: any) => void | Promise<void>;
+  dependencies?: NamePath[];
   children?:
     | React.ReactNode
     | ((context: FieldContext, meta: any) => React.ReactNode);
