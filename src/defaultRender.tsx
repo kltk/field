@@ -5,7 +5,7 @@ import { cloneNode } from './utils/cloneNode';
 import { nop } from './utils/nop';
 
 export function defaultRender<Value>(context: FieldContext, meta: any) {
-  const { control, value } = meta;
+  const { control, value, disabled } = meta;
   const { onChange: originOnChange = nop } = get(control, 'props') || {};
 
   function onChange(e: Value | React.ChangeEvent<HTMLInputElement>) {
@@ -18,5 +18,5 @@ export function defaultRender<Value>(context: FieldContext, meta: any) {
     originOnChange(e);
   }
 
-  return cloneNode(control, { value, onChange });
+  return cloneNode(control, { value, onChange, disabled });
 }

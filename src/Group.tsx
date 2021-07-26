@@ -9,13 +9,14 @@ const { Provider } = context;
 export type GroupProps<T> = ControlProps<T> & {
   context?: GroupContext<T>;
   initial?: T;
+  disabled?: boolean;
   onInvalid?: (errorFields: FieldMeta[]) => void | Promise<void>;
   onSubmit?: (values: T) => void | Promise<void>;
   children?: React.ReactNode;
 };
 
 export function Group<T>(props: GroupProps<T>) {
-  const { context, initial, value, children = null } = props;
+  const { context, initial, value, disabled, children = null } = props;
   const { onChange, onInvalid, onSubmit } = props;
 
   const groupContext = useGroupContext(context, initial);
@@ -35,8 +36,12 @@ export function Group<T>(props: GroupProps<T>) {
       if (draft.value === undefined) {
         draft.value = draft.initial;
       }
+
+      if (disabled !== undefined) {
+        draft.disabled = disabled;
+      }
     });
-  }, [groupContext, initial, value]);
+  }, [disabled, groupContext, initial, value]);
 
   /**
    * 为了尽早使用 initial/value，在首次渲染的时候直接更新数据

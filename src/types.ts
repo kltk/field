@@ -26,6 +26,7 @@ export type FieldMeta<Value = any> = {
 export type GroupState<T = any> = {
   initial?: T;
   value?: T;
+  disabled?: boolean;
   meta: FieldMeta[];
 };
 

@@ -13,7 +13,9 @@ export function useRender<Value>(
   const value = useSelector(context, () => context.getValue());
   const control = getOnlyChild(children);
 
-  const data = { sym, path, initial, value, errors, control };
+  const disabled = useSelector(context, (root) => root.disabled);
+
+  const data = { sym, path, initial, value, disabled, errors, control };
   const render = children instanceof Function ? children : defaultRender;
   return render(context, data) as React.ReactElement;
 }
