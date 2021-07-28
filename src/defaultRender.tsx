@@ -4,19 +4,40 @@ import { FieldContext } from './types';
 import { cloneNode } from './utils/cloneNode';
 import { nop } from './utils/nop';
 
-export function defaultRender<Value>(context: FieldContext, meta: any) {
-  const { control, value, disabled } = meta;
-  const { onChange: originOnChange = nop } = get(control, 'props') || {};
+type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
-  function onChange(e: Value | React.ChangeEvent<HTMLInputElement>) {
-    // 支持 html 事件
-    const key = get(e, 'target.type') === 'checkbox' ? 'checked' : 'value';
-    const value = has(e, 'target') ? get(e, ['target', key]) : e;
+export function defaultNormalize<Value>(e: Value | InputChangeEvent) {
+  // 支持 html 事件
+  const key = get(e, 'target.type') === 'checkbox' ? 'checked' : 'value';
+  const value = has(e, 'target') ? get(e, ['target', key]) : e;
+  return value;
+}
+
+export function defaultRender<Value>(context: FieldContext, props: any) {
+  const { control, value, disabled } = props;
+  const { normalize = defaultNormalize } = props;
+  const { trigger = 'onChange', valueName = 'value' } = props;
+  const originTrigger = get(control, ['props', trigger], nop);
+
+  function onChange(e: Value | InputChangeEvent) {
+    let value;
+    if (normalize instanceof Function) {
+      value = normalize(e);
+    } else if (typeof normalize === 'string') {
+      value = get(e, normalize);
+    } else {
+      value = e;
+    }
     context.setValue(value);
 
     // 支持控件原来的回调
-    originOnChange(e);
+    originTrigger(e);
   }
 
-  return cloneNode(control, { value, onChange, disabled });
+  const newProps = {
+    [trigger]: onChange,
+    [valueName]: value,
+    ...(disabled === undefined || disabled === null ? {} : { disabled }),
+  };
+  return cloneNode(control, newProps);
 }
