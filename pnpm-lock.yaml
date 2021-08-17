@@ -1,17 +1,27 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@types/lodash': ^4.14.172
+  '@types/shallowequal': ^1.1.1
   '@umijs/test': ^3.0.5
   dumi: ^1.0.16
   father-build: ^1.17.2
   gh-pages: ^3.0.0
+  kltk-observable: ^0.4.0
   lint-staged: ^10.0.7
+  lodash: ^4.17.21
   prettier: ^2.2.1
   react: ^16.12.0
+  shallowequal: ^1.1.0
   yorkie: ^2.0.0
 
 dependencies:
+  '@types/lodash': 4.14.172
+  '@types/shallowequal': 1.1.1
+  kltk-observable: 0.4.0
+  lodash: 4.17.21
   react: 16.14.0
+  shallowequal: 1.1.0
 
 devDependencies:
   '@umijs/test': 3.5.17
@@ -3101,6 +3111,10 @@ packages:
     resolution: {integrity: sha512-YSBPTLTVm2e2OoQIDYx8HaeWJ5tTToLH67kXR7zYNGupXMEHa2++G8k+DczX2cFVgalypqtyZIcU19AFcmOpmg==}
     dev: true
 
+  /@types/lodash/4.14.172:
+    resolution: {integrity: sha512-/BHF5HAx3em7/KkzVKm3LrsD6HZAXuXO1AJZQ3cRRBZj4oHZDviWPYu0aEplAqDFNHZPW6d3G7KN+ONcCCC7pw==}
+    dev: false
+
   /@types/mathjax/0.0.36:
     resolution: {integrity: sha512-TqDJc2GWuTqd/m+G/FbNkN+/TF2OCCHvcawmhIrUaZkdVquMdNZmNiNUkupNg9qctorXXkVLVSogZv1DhmgLmg==}
     dev: true
@@ -3218,6 +3232,10 @@ packages:
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
     dev: true
+
+  /@types/shallowequal/1.1.1:
+    resolution: {integrity: sha512-Lhni3aX80zbpdxRuWhnuYPm8j8UQaa571lHP/xI4W+7BAFhSIhRReXnqjEgT/XzPoXZTJkCqstFMJ8CZTK6IlQ==}
+    dev: false
 
   /@types/stack-utils/1.0.1:
     resolution: {integrity: sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==}
@@ -6880,6 +6898,10 @@ packages:
     dev: true
     optional: true
 
+  /immer/9.0.5:
+    resolution: {integrity: sha512-2WuIehr2y4lmYz9gaQzetPR2ECniCifk4ORaQbU3g5EalLt+0IVTosEPJ5BoYl/75ky2mivzdRzV8wWgQGOSYQ==}
+    dev: false
+
   /import-cwd/2.1.0:
     resolution: {integrity: sha1-qmzzbnInYShcs3HsZRn1PiQ1sKk=}
     engines: {node: '>=4'}
@@ -8206,6 +8228,12 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /kltk-observable/0.4.0:
+    resolution: {integrity: sha512-zsGVdSN4iTX/vbHtbge3eTUqBGpLT3KWiBcq8duK68MfnGeNEKGdCBYN1vyzei2my7XOBiAcmiauky8Ct2XYnw==}
+    dependencies:
+      immer: 9.0.5
+    dev: false
+
   /latest-version/5.1.0:
     resolution: {integrity: sha512-weT+r0kTkRQdCdYCNtkMwWXQTMEswKrFBkm4ckQOMVhhqhIMI1UT2hMj+1iigIhgSZm5gTmrRXBNoGUgaTY1xA==}
     engines: {node: '>=8'}
@@ -8421,7 +8449,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-symbols/4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -11309,7 +11336,6 @@ packages:
 
   /shallowequal/1.1.0:
     resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
-    dev: true
 
   /shebang-command/1.2.0:
     resolution: {integrity: sha1-RKrGW2lbAzmJaMOfNj/uXer98eo=}
