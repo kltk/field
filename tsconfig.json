@@ -11,7 +11,9 @@
     "strict": true,
     "paths": {
       "@/*": ["src/*"],
-      "@@/*": ["src/.umi/*"]
+      "@@/*": ["src/.umi/*"],
+      /** for dumi examples */
+      "kltk-field": ["src"]
     },
     "allowSyntheticDefaultImports": true
   },
