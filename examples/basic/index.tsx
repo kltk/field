@@ -1,7 +1,3 @@
-/**
- * title: 基础用法
- * desc: .`<Field />` 会自动将数据对应的 `value` `onChange` 绑定到表单控件
- */
 import { Field, Form } from 'kltk-field';
 import React from 'react';
 import Input from '../components/Input';

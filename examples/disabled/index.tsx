@@ -1,7 +1,3 @@
-/**
- * title: 禁用表单
- * desc: 使用 `disabled` 禁用表单内支持 `disabled` 的控件
- */
 import { Field, Form } from 'kltk-field';
 import React from 'react';
 import Input from '../components/Input';

@@ -1,7 +1,3 @@
-/**
- * title: 校验
- * desc:
- */
 import { Field, Form } from 'kltk-field';
 import React from 'react';
 import Input from '../components/Input';
