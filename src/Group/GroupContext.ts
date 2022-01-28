@@ -2,7 +2,7 @@ import { observable, Observable } from 'kltk-observable';
 import { get, has, set } from 'lodash';
 import React from 'react';
 import shallowEqual from 'shallowequal';
-import { EventType, GroupContext, GroupState } from './utils/types';
+import { EventType, GroupContext, GroupState } from '../utils/types';
 
 export function createGroupContext<T extends {}>(initial?: T): GroupContext<T> {
   const listenersMap = {

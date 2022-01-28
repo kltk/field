@@ -1,8 +1,8 @@
 import React from 'react';
 import shallowEqual from 'shallowequal';
+import { context } from '../utils/context';
+import { ControlProps, FieldMeta, GroupContext } from '../utils/types';
 import { useGroupContext } from './GroupContext';
-import { context } from './utils/context';
-import { ControlProps, FieldMeta, GroupContext } from './utils/types';
 
 const { Provider } = context;
 

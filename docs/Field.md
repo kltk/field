@@ -5,4 +5,4 @@ group:
   title: 组件
 ---
 ## Field
-<API src="../src/Field.tsx"></API>
+<API src="../src/Field/Field.tsx"></API>

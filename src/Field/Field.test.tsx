@@ -1,8 +1,8 @@
 import { cleanup, render } from '@testing-library/react';
 import React from 'react';
+import { Group } from '../Group/Group';
+import { createGroupContext } from '../Group/GroupContext';
 import { Field } from './Field';
-import { Group } from './Group';
-import { createGroupContext } from './GroupContext';
 
 describe('Field', () => {
   afterEach(cleanup);

@@ -1,4 +1,4 @@
-import { FieldProps } from '../Field';
+import { FieldProps } from '../Field/Field';
 import { defaultRender } from './defaultRender';
 import { getOnlyChild } from './getOnlyChild';
 import { FieldContext } from './types';

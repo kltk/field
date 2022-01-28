@@ -5,4 +5,4 @@ group:
   title: 组件
 ---
 ## Group
-<API src="../src/Group.tsx"></API>
+<API src="../src/Group/Group.tsx"></API>

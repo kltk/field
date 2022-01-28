@@ -1,7 +1,7 @@
 import { Assign } from 'kltk-observable/dist/types';
 import React from 'react';
-import { Group, GroupProps } from './Group';
-import { useGroupContext } from './GroupContext';
+import { Group, GroupProps } from './Group/Group';
+import { useGroupContext } from './Group/GroupContext';
 
 export type FormProps<T> = Assign<
   React.DOMAttributes<HTMLFormElement>,
