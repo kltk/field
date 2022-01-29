@@ -1,9 +1,10 @@
 import React from 'react';
+import { NamePath } from '../types';
 import { context } from '../utils/context';
-import { FieldContext, NamePath } from '../utils/types';
 import { useMeta } from '../utils/useMeta';
 import { useRender } from '../utils/useRender';
 import { useFieldContext } from './FieldContext';
+import { FieldContext } from './types';
 
 export type FieldProps<Value> = Partial<{
   path?: NamePath;

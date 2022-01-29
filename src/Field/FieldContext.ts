@@ -1,6 +1,8 @@
 import { extend } from 'kltk-observable/dist/extend';
 import React from 'react';
-import { FieldContext, FieldMeta, GroupContext, NamePath } from '../utils/types';
+import { GroupContext } from '../Group/types';
+import { NamePath } from '../types';
+import { FieldContext, FieldMeta } from './types';
 
 export function createFieldContext<T extends {}>(
   context: GroupContext<T>,

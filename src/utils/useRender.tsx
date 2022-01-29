@@ -1,7 +1,7 @@
 import { FieldProps } from '../Field/Field';
+import { FieldContext } from '../Field/types';
 import { defaultRender } from './defaultRender';
 import { getOnlyChild } from './getOnlyChild';
-import { FieldContext } from './types';
 import { useSelector } from './useSelector';
 
 export function useRender<Value>(

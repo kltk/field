@@ -1,27 +1,8 @@
 import { Observable } from 'kltk-observable';
-import { Assign } from 'kltk-observable/dist/types';
-
-type CastArray<T> = T | T[];
+import { FieldMeta } from '../Field/types';
+import { NamePath } from '../types';
 
 export type EventType = 'change' | 'invalid' | 'submit';
-
-export type NamePath = CastArray<string | number>;
-
-export type ControlProps<T = any> = {
-  value?: T;
-  onChange?: (changed?: T) => void;
-};
-
-export type FieldMeta<Value = any> = {
-  sym: symbol;
-  path?: NamePath;
-  initial?: Value;
-  value?: Value;
-
-  control?: React.ReactNode;
-  validate?: () => void | Promise<void>;
-  errors?: (string | Error)[];
-};
 
 export type GroupState<T = any> = {
   initial?: T;
@@ -49,14 +30,3 @@ export type GroupContext<S = any> = Observable<GroupState<S>> & {
   validate: () => void | Promise<void>;
   submit: () => void | Promise<void>;
 };
-
-export type FieldContext = Assign<
-  GroupContext,
-  {
-    hasValue: () => boolean;
-    getValue: <Value>() => Value;
-    setValue: <Value>(value: Value) => void;
-    getMeta: () => FieldMeta;
-    updateMeta: (changed: Partial<FieldMeta>) => void;
-  }
->;

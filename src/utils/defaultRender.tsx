@@ -1,8 +1,8 @@
 import { get, has } from 'lodash';
 import React from 'react';
+import { FieldContext } from '../Field/types';
 import { cloneNode } from './cloneNode';
 import { nop } from './nop';
-import { FieldContext } from './types';
 
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 

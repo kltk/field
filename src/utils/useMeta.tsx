@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldProps } from '../Field/Field';
-import { FieldContext } from './types';
+import { FieldContext } from '../Field/types';
 
 export function useMeta<Value>(
   context: FieldContext,

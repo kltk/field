@@ -1,6 +1,6 @@
 import React from 'react';
 import shallowEqual from 'shallowequal';
-import { GroupContext, GroupState } from './types';
+import { GroupContext, GroupState } from '../Group/types';
 import { useEffectWithLatestState } from './useEffectWithLatestState';
 
 export function useSelector<T, R>(
