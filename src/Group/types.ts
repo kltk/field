@@ -11,11 +11,16 @@ export type GroupState<T = any> = {
   meta: FieldMeta[];
 };
 
-export type GroupContext<S = any> = Observable<GroupState<S>> & {
+type GroupContextEmitter = {
   on: (type: EventType, listener: Function) => () => void;
   off: (type: EventType, listener?: Function) => void;
-  emit: (type: EventType) => void;
+  emit: (type: EventType, ...rest: any[]) => void;
+  reset: () => void;
+  validate: () => void | Promise<void>;
+  submit: () => void | Promise<void>;
+};
 
+type GroupMethods = {
   hasFieldValue: (path: NamePath) => boolean;
   getFieldValue: <Value>(path: NamePath) => Value;
   setFieldValue: <Value>(path: NamePath, value: Value) => void;
@@ -25,8 +30,8 @@ export type GroupContext<S = any> = Observable<GroupState<S>> & {
 
   getFieldsMeta: (syms?: symbol[]) => FieldMeta[];
   setFieldMeta: (sym: symbol, meta: FieldMeta) => void;
-
-  reset: () => void;
-  validate: () => void | Promise<void>;
-  submit: () => void | Promise<void>;
 };
+
+export type GroupContext<S = any> = Observable<GroupState<S>> &
+  GroupContextEmitter &
+  GroupMethods;
