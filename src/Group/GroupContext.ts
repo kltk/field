@@ -4,6 +4,7 @@ import React from 'react';
 import shallowEqual from 'shallowequal';
 import { createEmitter } from './emitter';
 import { createEvent } from './event';
+import { createHooks } from './hooks';
 import { createMethods } from './methods';
 import { GroupContext, GroupState } from './types';
 
@@ -13,6 +14,7 @@ export function createGroupContext<T>(initial?: T): GroupContext<T> {
   const emitter = createEmitter();
   const event = createEvent(context);
   const methods = createMethods(context);
+  const hooks = createHooks(context);
 
   let prevState = context.state.value;
   context.subscribe((root) => {
@@ -22,7 +24,7 @@ export function createGroupContext<T>(initial?: T): GroupContext<T> {
     }
   });
 
-  return extend(context, emitter, event, methods);
+  return extend(context, emitter, event, methods, hooks);
 }
 
 export function useGroupContext<T>(context?: GroupContext<T>, initial?: T) {

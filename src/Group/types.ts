@@ -32,6 +32,12 @@ type GroupMethods = {
   setFieldMeta: (sym: symbol, meta: FieldMeta) => void;
 };
 
+type GroupContextHook<State> = {
+  useSelector: <Return>(getter: (state: State) => Return) => Return;
+  useEvent: (type: EventType, listener?: Function) => void;
+};
+
 export type GroupContext<S = any> = Observable<GroupState<S>> &
   GroupContextEmitter &
-  GroupMethods;
+  GroupMethods &
+  GroupContextHook<GroupState<S>>;

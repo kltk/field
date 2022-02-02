@@ -53,23 +53,9 @@ export function Group<T>(props: GroupProps<T>) {
 
   React.useEffect(update, [update]);
 
-  React.useEffect(() => {
-    if (onChange instanceof Function) {
-      return groupContext.on('change', onChange);
-    }
-  }, [groupContext, onChange]);
-
-  React.useEffect(() => {
-    if (onInvalid instanceof Function) {
-      return groupContext.on('invalid', onInvalid);
-    }
-  }, [groupContext, onInvalid]);
-
-  React.useEffect(() => {
-    if (onSubmit instanceof Function) {
-      return groupContext.on('submit', onSubmit);
-    }
-  }, [groupContext, onSubmit]);
+  groupContext.useEvent('change', onChange);
+  groupContext.useEvent('invalid', onInvalid);
+  groupContext.useEvent('submit', onSubmit);
 
   return <Provider value={groupContext}>{children}</Provider>;
 }
