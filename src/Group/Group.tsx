@@ -1,10 +1,10 @@
 import React from 'react';
-import shallowEqual from 'shallowequal';
 import { FieldMeta } from '../Field/types';
 import { ControlProps } from '../types';
 import { context } from '../utils/context';
 import { useGroupContext } from './GroupContext';
 import { GroupContext, GroupOptions } from './types';
+import { update } from './update';
 
 const { Provider } = context;
 
@@ -26,35 +26,7 @@ export function Group<T>(props: GroupProps<T>) {
 
   const groupContext = useGroupContext(context, initial);
 
-  const update = React.useCallback(() => {
-    groupContext.setState((draft) => {
-      if (initial !== undefined) {
-        draft.initial = initial;
-      }
-
-      if (value !== undefined) {
-        if (!shallowEqual(draft.value, value)) {
-          draft.value = value;
-        }
-      }
-
-      if (draft.value === undefined) {
-        draft.value = draft.initial;
-      }
-
-      if (disabled !== undefined) {
-        draft.options = { disabled };
-      }
-    });
-  }, [disabled, groupContext, initial, value]);
-
-  /**
-   * 为了尽早使用 initial/value，在首次渲染的时候直接更新数据
-   * 相当于 constructor/willMount
-   */
-  React.useState(update);
-
-  React.useEffect(update, [update]);
+  update(groupContext, initial, value, { disabled });
 
   groupContext.useEvent('change', onChange);
   groupContext.useEvent('invalid', onInvalid);
