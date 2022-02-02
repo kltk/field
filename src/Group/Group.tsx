@@ -4,18 +4,21 @@ import { FieldMeta } from '../Field/types';
 import { ControlProps } from '../types';
 import { context } from '../utils/context';
 import { useGroupContext } from './GroupContext';
-import { GroupContext } from './types';
+import { GroupContext, GroupOptions } from './types';
 
 const { Provider } = context;
 
-export type GroupProps<T> = ControlProps<T> & {
-  context?: GroupContext<T>;
-  initial?: T;
-  disabled?: boolean;
+type GroupPropsBase<State> = {
+  context?: GroupContext<State>;
+  initial?: State;
   onInvalid?: (errorFields: FieldMeta[]) => void | Promise<void>;
-  onSubmit?: (values: T) => void | Promise<void>;
+  onSubmit?: (values: State) => void | Promise<void>;
   children?: React.ReactNode;
 };
+
+export type GroupProps<State> = ControlProps<State> &
+  GroupPropsBase<State> &
+  GroupOptions;
 
 export function Group<T>(props: GroupProps<T>) {
   const { context, initial, value, disabled, children = null } = props;
@@ -40,7 +43,7 @@ export function Group<T>(props: GroupProps<T>) {
       }
 
       if (disabled !== undefined) {
-        draft.disabled = disabled;
+        draft.options = { disabled };
       }
     });
   }, [disabled, groupContext, initial, value]);

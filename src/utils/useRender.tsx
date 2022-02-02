@@ -13,7 +13,7 @@ export function useRender<Value>(
   const value = useSelector(context, () => context.getValue());
   const control = getOnlyChild(children);
 
-  const disabled = useSelector(context, (root) => root.disabled);
+  const { disabled } = useSelector(context, (root) => root.options || {});
 
   useSelector(context, () =>
     dependencies.map((path) => context.getFieldValue(path)),

@@ -4,10 +4,15 @@ import { NamePath } from '../types';
 
 export type EventType = 'change' | 'invalid' | 'submit';
 
-export type GroupState<T = any> = {
+export type GroupOptions = {
+  /** 禁用表单，支持 `disabled` 的控件会被禁用 */
+  disabled?: boolean;
+};
+
+export type GroupState<T = any, O = GroupOptions> = {
   initial?: T;
   value?: T;
-  disabled?: boolean;
+  options?: O;
   meta: FieldMeta[];
 };
 
