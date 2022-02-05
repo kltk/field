@@ -6,7 +6,7 @@ import { FieldContext, FieldMeta } from './types';
 
 export function createFieldContext<T extends {}>(
   context: GroupContext<T>,
-  sym: symbol,
+  key: symbol,
   path: NamePath,
 ): FieldContext {
   const fieldContext = {} as FieldContext;
@@ -22,21 +22,21 @@ export function createFieldContext<T extends {}>(
     },
 
     getMeta() {
-      return context.getFieldsMeta([sym])[0];
+      return context.getFieldsMeta([key])[0];
     },
     updateMeta(changed: Partial<FieldMeta>) {
       const meta = fieldContext.getMeta();
-      context.setFieldMeta(sym, { ...meta, ...changed, sym });
+      context.setFieldMeta(key, { ...meta, ...changed, key });
     },
   });
 }
 
 export function useFieldContext<T>(context: GroupContext<T>, path: NamePath) {
-  const [sym] = React.useState(() => Symbol());
-  React.useEffect(() => context.registerField(sym), [context, sym]);
+  const [key] = React.useState(() => Symbol());
+  React.useEffect(() => context.registerField(key), [context, key]);
 
   return React.useMemo(
-    () => createFieldContext(context, sym, path),
-    [context, path, sym],
+    () => createFieldContext(context, key, path),
+    [context, path, key],
   );
 }

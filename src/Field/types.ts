@@ -3,7 +3,7 @@ import { GroupContext } from '../Group/types';
 import { NamePath } from '../types';
 
 export type FieldMeta<Value = any> = {
-  sym: symbol;
+  key: symbol;
   path?: NamePath;
   initial?: Value;
   value?: Value;

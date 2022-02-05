@@ -30,11 +30,11 @@ type GroupMethods = {
   getFieldValue: <Value>(path: NamePath) => Value;
   setFieldValue: <Value>(path: NamePath, value: Value) => void;
 
-  registerField: (sym: symbol) => () => void;
-  unregisterField: (sym: symbol) => void;
+  registerField: (key: symbol) => () => void;
+  unregisterField: (key: symbol) => void;
 
   getFieldsMeta: (syms?: symbol[]) => FieldMeta[];
-  setFieldMeta: (sym: symbol, meta: FieldMeta) => void;
+  setFieldMeta: (key: symbol, meta: FieldMeta) => void;
 };
 
 type GroupContextHook<State> = {

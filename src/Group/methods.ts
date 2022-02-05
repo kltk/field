@@ -24,26 +24,26 @@ export function createMethods<T extends {}>(context: GroupContext<T>) {
       });
     },
 
-    registerField(sym) {
+    registerField(key) {
       context.setState((root) => {
-        root.meta.push({ sym });
+        root.meta.push({ key });
       });
-      return () => context.unregisterField(sym);
+      return () => context.unregisterField(key);
     },
-    unregisterField(sym) {
+    unregisterField(key) {
       context.setState((root) => {
-        root.meta = root.meta.filter((meta) => meta.sym !== sym);
+        root.meta = root.meta.filter((meta) => meta.key !== key);
       });
     },
 
     getFieldsMeta(syms) {
       return context.getState((root) =>
-        root.meta.filter((item) => !syms || syms.includes(item.sym)),
+        root.meta.filter((item) => !syms || syms.includes(item.key)),
       );
     },
-    setFieldMeta(sym, meta) {
+    setFieldMeta(key, meta) {
       return context.setState((root) => {
-        root.meta = root.meta.map((item) => (item.sym === sym ? meta : item));
+        root.meta = root.meta.map((item) => (item.key === key ? meta : item));
       });
     },
   });
