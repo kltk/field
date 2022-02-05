@@ -4,10 +4,15 @@ import { GroupContext } from './types';
 
 export function createMethods<T extends {}>(context: GroupContext<T>) {
   return castContext({
-    hasFieldValue(path) {
-      const isEmptyPath = !path || !get(path, 'length');
-      if (isEmptyPath) return true;
-      return context.getState((root) => has(root.value, path));
+    getFieldsMeta(syms) {
+      return context.getState((root) =>
+        root.meta.filter((item) => !syms || syms.includes(item.key)),
+      );
+    },
+    setFieldMeta(key, meta) {
+      return context.setState((root) => {
+        root.meta = root.meta.map((item) => (item.key === key ? meta : item));
+      });
     },
     getFieldValue(path) {
       const isEmptyPath = !path || !get(path, 'length');
@@ -24,6 +29,11 @@ export function createMethods<T extends {}>(context: GroupContext<T>) {
       });
     },
 
+    hasFieldValue(path) {
+      const isEmptyPath = !path || !get(path, 'length');
+      if (isEmptyPath) return true;
+      return context.getState((root) => has(root.value, path));
+    },
     registerField(key) {
       context.setState((root) => {
         root.meta.push({ key });
@@ -33,17 +43,6 @@ export function createMethods<T extends {}>(context: GroupContext<T>) {
     unregisterField(key) {
       context.setState((root) => {
         root.meta = root.meta.filter((meta) => meta.key !== key);
-      });
-    },
-
-    getFieldsMeta(syms) {
-      return context.getState((root) =>
-        root.meta.filter((item) => !syms || syms.includes(item.key)),
-      );
-    },
-    setFieldMeta(key, meta) {
-      return context.setState((root) => {
-        root.meta = root.meta.map((item) => (item.key === key ? meta : item));
       });
     },
   });

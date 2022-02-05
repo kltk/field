@@ -25,15 +25,14 @@ type GroupContextEmitter = {
 };
 
 type GroupMethods = {
-  hasFieldValue: (path: FieldPath) => boolean;
+  getFieldsMeta: (syms?: symbol[]) => FieldMeta[];
+  setFieldMeta: (key: symbol, meta: FieldMeta) => void;
   getFieldValue: <Value>(path: FieldPath) => Value;
   setFieldValue: <Value>(path: FieldPath, value: Value) => void;
 
+  hasFieldValue: (path: FieldPath) => boolean;
   registerField: (key: symbol) => () => void;
   unregisterField: (key: symbol) => void;
-
-  getFieldsMeta: (syms?: symbol[]) => FieldMeta[];
-  setFieldMeta: (key: symbol, meta: FieldMeta) => void;
 };
 
 type GroupContextHook<State> = {
