@@ -1,6 +1,5 @@
 import { Observable } from 'kltk-observable';
-import { FieldMeta } from '../Field/types';
-import { NamePath } from '../types';
+import { FieldMeta, FieldPath } from '../Field/types';
 
 export type EventType = 'change' | 'invalid' | 'submit';
 
@@ -26,9 +25,9 @@ type GroupContextEmitter = {
 };
 
 type GroupMethods = {
-  hasFieldValue: (path: NamePath) => boolean;
-  getFieldValue: <Value>(path: NamePath) => Value;
-  setFieldValue: <Value>(path: NamePath, value: Value) => void;
+  hasFieldValue: (path: FieldPath) => boolean;
+  getFieldValue: <Value>(path: FieldPath) => Value;
+  setFieldValue: <Value>(path: FieldPath, value: Value) => void;
 
   registerField: (key: symbol) => () => void;
   unregisterField: (key: symbol) => void;

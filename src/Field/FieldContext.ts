@@ -1,13 +1,12 @@
 import { extend } from 'kltk-observable/dist/extend';
 import React from 'react';
 import { GroupContext } from '../Group/types';
-import { NamePath } from '../types';
-import { FieldContext, FieldMeta } from './types';
+import { FieldContext, FieldMeta, FieldPath } from './types';
 
 export function createFieldContext<T extends {}>(
   context: GroupContext<T>,
   key: symbol,
-  path: NamePath,
+  path: FieldPath,
 ): FieldContext {
   const fieldContext = {} as FieldContext;
   return extend(fieldContext, context, {
@@ -31,7 +30,7 @@ export function createFieldContext<T extends {}>(
   });
 }
 
-export function useFieldContext<T>(context: GroupContext<T>, path: NamePath) {
+export function useFieldContext<T>(context: GroupContext<T>, path: FieldPath) {
   const [key] = React.useState(() => Symbol());
   React.useEffect(() => context.registerField(key), [context, key]);
 

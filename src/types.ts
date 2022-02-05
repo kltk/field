@@ -1,6 +1,4 @@
-type CastArray<T> = T | T[];
-
-export type NamePath = CastArray<string | number>;
+export type CastArray<T> = T | T[];
 
 export type ControlProps<T = any> = {
   value?: T;

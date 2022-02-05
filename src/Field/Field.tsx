@@ -1,16 +1,15 @@
 import React from 'react';
-import { NamePath } from '../types';
 import { context } from '../utils/context';
 import { useMeta } from '../utils/useMeta';
 import { useRender } from '../utils/useRender';
 import { useFieldContext } from './FieldContext';
-import { FieldContext } from './types';
+import { FieldContext, FieldPath } from './types';
 
 export type FieldProps<Value> = Partial<{
-  path?: NamePath;
+  path?: FieldPath;
   initial?: Value;
   validate?: (context: FieldContext, value: any) => void | Promise<void>;
-  dependencies?: NamePath[];
+  dependencies?: FieldPath[];
   normalize?: string | ((...rest: any[]) => any);
   trigger?: string;
   valueName?: string;

@@ -1,10 +1,12 @@
 import { Assign } from 'kltk-observable/dist/types';
 import { GroupContext } from '../Group/types';
-import { NamePath } from '../types';
+import { CastArray } from '../types';
+
+export type FieldPath = CastArray<keyof any>;
 
 export type FieldMeta<Value = any> = {
   key: symbol;
-  path?: NamePath;
+  path?: FieldPath;
   initial?: Value;
   value?: Value;
 
