@@ -4,6 +4,8 @@ import { CastArray } from '../types';
 
 export type FieldPath = CastArray<keyof any>;
 
+export type FieldSpec = symbol | FieldPath;
+
 export type FieldMeta<Value = any> = {
   key: symbol;
   path?: FieldPath;

@@ -1,5 +1,6 @@
 import { Observable } from 'kltk-observable';
-import { FieldMeta, FieldPath } from '../Field/types';
+import { FieldMeta, FieldPath, FieldSpec } from '../Field/types';
+import { UniArrObj } from '../types';
 
 export type EventType = 'change' | 'invalid' | 'submit';
 
@@ -25,14 +26,19 @@ type GroupContextEmitter = {
 };
 
 type GroupMethods = {
-  getFieldsMeta: (syms?: symbol[]) => FieldMeta[];
-  setFieldMeta: (key: symbol, meta: FieldMeta) => void;
+  getField: (spec: FieldSpec) => FieldMeta | undefined;
+  setField: (spec: FieldSpec, meta: FieldMeta) => void;
   getFieldValue: <Value>(path: FieldPath) => Value;
   setFieldValue: <Value>(path: FieldPath, value: Value) => void;
+  getFieldErrors: (spec: FieldSpec) => (string | Error)[];
+  setFieldErrors: (spec: FieldSpec, errors: (string | Error)[]) => void;
 
+  updateField: (spec: FieldSpec, meta: Partial<FieldMeta>) => void;
+  validateFields: (specs?: FieldSpec[]) => void | Promise<void>;
+  getFieldsValue: (paths: UniArrObj<FieldPath>) => any;
   hasFieldValue: (path: FieldPath) => boolean;
-  registerField: (key: symbol) => () => void;
-  unregisterField: (key: symbol) => void;
+  registerField: (field: FieldMeta) => () => void;
+  unregisterField: (field: FieldMeta) => void;
 };
 
 type GroupContextHook<State> = {

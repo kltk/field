@@ -1,48 +1,62 @@
-import { get, has, set } from 'lodash';
+import { filter, find, findIndex, flatMap, get, has, set } from 'lodash';
+import { mapValues } from '../utils/mapValues';
 import { castContext } from './castContext';
+import { fieldMatches } from './fieldMatches';
+import { toValuePath } from './toValuePath';
 import { GroupContext } from './types';
 
-export function createMethods<T extends {}>(context: GroupContext<T>) {
+export function createMethods<T>(context: GroupContext<T>) {
   return castContext({
-    getFieldsMeta(syms) {
-      return context.getState((root) =>
-        root.meta.filter((item) => !syms || syms.includes(item.key)),
-      );
+    getField(spec) {
+      return find(context.state.meta, fieldMatches(spec));
     },
-    setFieldMeta(key, meta) {
+    setField(spec, meta) {
       return context.setState((root) => {
-        root.meta = root.meta.map((item) => (item.key === key ? meta : item));
+        const index = findIndex(root.meta, fieldMatches(spec));
+        if (~index) root.meta[index] = meta;
       });
     },
     getFieldValue(path) {
-      const isEmptyPath = !path || !get(path, 'length');
-      return context.getState((root) =>
-        isEmptyPath ? root.value : get(root.value, path),
-      );
+      return get(context.state, toValuePath(path));
     },
     setFieldValue(path, value) {
-      const isEmptyPath = !path || !get(path, 'length');
       context.setState((root) => {
-        root.value = isEmptyPath
-          ? (value as unknown as typeof root.value)
-          : set({ ...root.value! }, path, value);
+        set(root, toValuePath(path), value);
       });
+    },
+    getFieldErrors(spec) {
+      return flatMap(filter(context.state.meta, fieldMatches(spec)), 'errors');
+    },
+    setFieldErrors(spec, errors) {
+      context.updateField(spec, { errors });
     },
 
+    updateField(spec, meta) {
+      const state = context.getField(spec);
+      context.setField(spec, Object.assign({}, state, meta));
+    },
+    validateFields(specs) {
+      const metas = flatMap(specs, (spec) =>
+        filter(context.state.meta, fieldMatches(spec)),
+      );
+      metas.map((meta) => meta.validate?.());
+    },
+    getFieldsValue(paths) {
+      return mapValues(paths, (path) => context.getFieldValue(path));
+    },
     hasFieldValue(path) {
-      const isEmptyPath = !path || !get(path, 'length');
-      if (isEmptyPath) return true;
-      return context.getState((root) => has(root.value, path));
+      return has(context.state, toValuePath(path));
     },
-    registerField(key) {
+    registerField(field) {
       context.setState((root) => {
-        root.meta.push({ key });
+        root.meta.push(field);
       });
-      return () => context.unregisterField(key);
+      return () => context.unregisterField(field);
     },
-    unregisterField(key) {
+    unregisterField(field) {
+      const match = fieldMatches(field.key);
       context.setState((root) => {
-        root.meta = root.meta.filter((meta) => meta.key !== key);
+        root.meta = filter(root.meta, (meta) => !match(meta));
       });
     },
   });

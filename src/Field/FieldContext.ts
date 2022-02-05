@@ -21,18 +21,17 @@ export function createFieldContext<T extends {}>(
     },
 
     getMeta() {
-      return context.getFieldsMeta([key])[0];
+      return context.getField(key)!;
     },
     updateMeta(changed: Partial<FieldMeta>) {
-      const meta = fieldContext.getMeta();
-      context.setFieldMeta(key, { ...meta, ...changed, key });
+      return context.updateField(key, changed);
     },
   });
 }
 
 export function useFieldContext<T>(context: GroupContext<T>, path: FieldPath) {
   const [key] = React.useState(() => Symbol());
-  React.useEffect(() => context.registerField(key), [context, key]);
+  React.useEffect(() => context.registerField({ key }), [context, key]);
 
   return React.useMemo(
     () => createFieldContext(context, key, path),
