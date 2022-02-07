@@ -12,6 +12,7 @@ export type FieldValidate<Value = any> = (
 ) => void | Promise<void>;
 
 export type FieldMeta<Value = any> = {
+  /** 一个字段同时有多个控制组件时用于关联状态和组件 */
   key: symbol;
   path?: FieldPath;
   initial?: Value;
@@ -26,9 +27,13 @@ export type FieldContext<Value = any> = Assign<
   GroupContext,
   {
     getMeta: () => FieldMeta;
+    setMeta: (changed: FieldMeta) => void;
     getValue: () => Value;
     setValue: (value: Value) => void;
     updateMeta: (changed: Partial<FieldMeta>) => void;
+    validate: () => void;
     hasValue: () => boolean;
+    useField: () => FieldMeta;
+    useValue: () => Value;
   }
 >;

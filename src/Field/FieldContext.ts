@@ -1,40 +1,56 @@
 import { extend } from 'kltk-observable/dist/extend';
 import React from 'react';
 import { GroupContext } from '../Group/types';
-import { FieldContext, FieldMeta, FieldPath } from './types';
+import { castType, CastTypeFn } from '../utils/castType';
+import { FieldContext, FieldPath } from './types';
 
-export function createFieldContext<T extends {}>(
-  context: GroupContext<T>,
-  key: symbol,
+const castContext: CastTypeFn<Partial<FieldContext>> = castType;
+
+export function createFieldContext(
+  group: GroupContext,
   path: FieldPath,
 ): FieldContext {
-  const fieldContext = {} as FieldContext;
-  return extend(fieldContext, context, {
+  const key = Symbol();
+  group.registerField({ key, path });
+
+  const context = {} as FieldContext;
+  const methods = castContext({
     getMeta() {
-      return context.getField(key)!;
+      return group.getField(key)!;
     },
-    getValue<Value>() {
-      return context.getFieldValue<Value>(path);
+    setMeta(changed) {
+      return group.setField(key, changed);
     },
-    setValue<Value>(value: Value) {
-      return context.setFieldValue(path, value);
+    getValue() {
+      return group.getFieldValue(path);
+    },
+    setValue(value) {
+      return group.setFieldValue(path, value);
     },
 
-    updateMeta(changed: Partial<FieldMeta>) {
-      return context.updateField(key, changed);
+    updateMeta(changed) {
+      return group.updateField(key, changed);
+    },
+    validate() {
+      return context.getMeta()?.validate?.();
     },
     hasValue() {
-      return context.hasFieldValue(path);
+      return group.hasFieldValue(path);
+    },
+
+    useField() {
+      return context.useSelector(() => context.getMeta());
+    },
+    useValue() {
+      return context.useSelector(() => context.getValue());
     },
   });
+  return extend(context, group, methods);
 }
 
 export function useFieldContext<T>(context: GroupContext<T>, path: FieldPath) {
-  const [key] = React.useState(() => Symbol());
-  React.useEffect(() => context.registerField({ key }), [context, key]);
-
   return React.useMemo(
-    () => createFieldContext(context, key, path),
-    [context, path, key],
+    () => createFieldContext(context, path),
+    [context, path],
   );
 }

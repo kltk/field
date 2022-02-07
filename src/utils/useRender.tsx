@@ -2,22 +2,19 @@ import { FieldProps } from '../Field/Field';
 import { FieldContext } from '../Field/types';
 import { defaultRender } from './defaultRender';
 import { getOnlyChild } from './getOnlyChild';
-import { useSelector } from './useSelector';
 
 export function useRender<Value>(
   context: FieldContext,
   props: FieldProps<Value>,
 ) {
-  const { dependencies = [], children, ...rest } = props;
-  const { key, errors } = useSelector(context, () => context.getMeta() || {});
-  const value = useSelector(context, () => context.getValue());
+  const { dependencies: deps = [], children, ...rest } = props;
+  const { key, errors } = context.useField() || {};
+  const value = context.useValue();
   const control = getOnlyChild(children);
 
-  const { disabled } = useSelector(context, (root) => root.options || {});
+  const { disabled } = context.useSelector((root) => root.options || {});
 
-  useSelector(context, () =>
-    dependencies.map((path) => context.getFieldValue(path)),
-  );
+  context.useSelector(() => deps.map((path) => context.getFieldValue(path)));
 
   const data = { key, value, disabled, errors, control, ...rest };
   const render = children instanceof Function ? children : defaultRender;
