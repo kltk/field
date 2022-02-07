@@ -6,6 +6,11 @@ export type FieldPath = CastArray<keyof any>;
 
 export type FieldSpec = symbol | FieldPath;
 
+export type FieldValidate<Value = any> = (
+  context: FieldContext,
+  value: Value,
+) => void | Promise<void>;
+
 export type FieldMeta<Value = any> = {
   key: symbol;
   path?: FieldPath;
@@ -17,12 +22,12 @@ export type FieldMeta<Value = any> = {
   errors?: (string | Error)[];
 };
 
-export type FieldContext = Assign<
+export type FieldContext<Value = any> = Assign<
   GroupContext,
   {
     hasValue: () => boolean;
-    getValue: <Value>() => Value;
-    setValue: <Value>(value: Value) => void;
+    getValue: () => Value;
+    setValue: (value: Value) => void;
     getMeta: () => FieldMeta;
     updateMeta: (changed: Partial<FieldMeta>) => void;
   }

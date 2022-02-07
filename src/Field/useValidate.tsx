@@ -1,13 +1,10 @@
 import React from 'react';
-import { FieldProps } from '../Field/Field';
-import { FieldContext } from '../Field/types';
+import { FieldContext, FieldValidate } from './types';
 
-export function useMeta<Value>(
+export function useValidate<Value>(
   context: FieldContext,
-  props: FieldProps<Value>,
+  validate?: FieldValidate<Value>,
 ) {
-  const { validate } = props;
-
   React.useEffect(() => {
     context.updateMeta({
       async validate() {
@@ -17,7 +14,7 @@ export function useMeta<Value>(
           await validate(context, value);
           context.updateMeta({ errors: [] });
         } catch (error) {
-          const errors = error instanceof Array ? error : [error];
+          const errors = Array.isArray(error) ? error : [error];
           context.updateMeta({ errors });
         }
       },

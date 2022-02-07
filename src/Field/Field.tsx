@@ -1,14 +1,14 @@
 import React from 'react';
 import { context } from '../utils/context';
-import { useMeta } from '../utils/useMeta';
 import { useRender } from '../utils/useRender';
 import { useFieldContext } from './FieldContext';
-import { FieldContext, FieldPath } from './types';
+import { FieldContext, FieldPath, FieldValidate } from './types';
+import { useValidate } from './useValidate';
 
-export type FieldProps<Value> = Partial<{
+export type FieldProps<Value = any> = Partial<{
   path?: FieldPath;
   initial?: Value;
-  validate?: (context: FieldContext, value: any) => void | Promise<void>;
+  validate?: FieldValidate<Value>;
   dependencies?: FieldPath[];
   normalize?: string | ((...rest: any[]) => any);
   trigger?: string;
@@ -19,7 +19,7 @@ export type FieldProps<Value> = Partial<{
 }>;
 
 export function Field<Value = any>(props: FieldProps<Value>) {
-  const { path = '', initial } = props;
+  const { path = '', initial, validate } = props;
 
   const groupContext = React.useContext(context);
   const fieldContext = useFieldContext(groupContext, path);
@@ -35,7 +35,7 @@ export function Field<Value = any>(props: FieldProps<Value>) {
   React.useState(update);
   React.useEffect(update);
 
-  useMeta(fieldContext, props);
+  useValidate(fieldContext, validate);
 
   return useRender(fieldContext, props);
 }
