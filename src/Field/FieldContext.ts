@@ -10,8 +10,8 @@ export function createFieldContext<T extends {}>(
 ): FieldContext {
   const fieldContext = {} as FieldContext;
   return extend(fieldContext, context, {
-    hasValue() {
-      return context.hasFieldValue(path);
+    getMeta() {
+      return context.getField(key)!;
     },
     getValue<Value>() {
       return context.getFieldValue<Value>(path);
@@ -20,11 +20,11 @@ export function createFieldContext<T extends {}>(
       return context.setFieldValue(path, value);
     },
 
-    getMeta() {
-      return context.getField(key)!;
-    },
     updateMeta(changed: Partial<FieldMeta>) {
       return context.updateField(key, changed);
+    },
+    hasValue() {
+      return context.hasFieldValue(path);
     },
   });
 }

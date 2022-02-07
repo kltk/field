@@ -25,10 +25,10 @@ export type FieldMeta<Value = any> = {
 export type FieldContext<Value = any> = Assign<
   GroupContext,
   {
-    hasValue: () => boolean;
+    getMeta: () => FieldMeta;
     getValue: () => Value;
     setValue: (value: Value) => void;
-    getMeta: () => FieldMeta;
     updateMeta: (changed: Partial<FieldMeta>) => void;
+    hasValue: () => boolean;
   }
 >;
