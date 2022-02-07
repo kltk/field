@@ -30,5 +30,13 @@ export function createHooks<State>(context: GroupContext<State>) {
         return context.on(type, listener);
       }, [context, type, listener]);
     },
+
+    useFieldValue(spec) {
+      return context.useSelector(() => context.getFieldValue(spec));
+    },
+
+    useFieldsValue(specs) {
+      return context.useSelector(() => context.getFieldsValue(specs));
+    },
   });
 }

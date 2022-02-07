@@ -11,6 +11,8 @@ export type FieldValidate<Value = any> = (
   value: Value,
 ) => void | Promise<void>;
 
+export type FieldRender = (context: FieldContext, meta: any) => React.ReactNode;
+
 export type FieldMeta<Value = any> = {
   /** 一个字段同时有多个控制组件时用于关联状态和组件 */
   key: symbol;

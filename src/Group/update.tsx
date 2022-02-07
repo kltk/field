@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash';
 import shallowEqual from 'shallowequal';
-import { GroupContext, GroupOptions } from './types';
+import { RenderOptions } from '../utils/defaultRender';
+import { GroupContext } from './types';
 
 /**
  * 更新上下文数据
@@ -13,7 +14,7 @@ export function update<State>(
   context: GroupContext<State>,
   initial?: State,
   value?: State,
-  options?: GroupOptions,
+  options?: RenderOptions,
 ) {
   if (initial !== undefined) {
     if (initial !== context.state.initial) {

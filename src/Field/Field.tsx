@@ -1,41 +1,53 @@
 import React from 'react';
+import { UniArrObj } from '../types';
 import { context } from '../utils/context';
-import { useRender } from '../utils/useRender';
+import { defaultRender, RenderOptions } from '../utils/defaultRender';
+import { getOnlyChild } from '../utils/getOnlyChild';
 import { useFieldContext } from './FieldContext';
-import { FieldContext, FieldPath, FieldValidate } from './types';
+import { FieldPath, FieldRender, FieldValidate } from './types';
 import { useValidate } from './useValidate';
 
-export type FieldProps<Value = any> = Partial<{
+type FieldPropsBase<Value> = {
   path?: FieldPath;
   initial?: Value;
   validate?: FieldValidate<Value>;
-  dependencies?: FieldPath[];
-  normalize?: string | ((...rest: any[]) => any);
-  trigger?: string;
-  valueName?: string;
-  children?:
-    | React.ReactNode
-    | ((context: FieldContext, meta: any) => React.ReactNode);
-}>;
+  depends?: UniArrObj<FieldPath>;
+  children?: FieldRender | React.ReactNode;
+};
+
+export type FieldProps<Value = any> = FieldPropsBase<Value> & RenderOptions;
 
 export function Field<Value = any>(props: FieldProps<Value>) {
-  const { path = '', initial, validate } = props;
+  const { path = '', initial, validate, depends, children, ...rest } = props;
 
   const groupContext = React.useContext(context);
   const fieldContext = useFieldContext(groupContext, path);
 
-  const update = React.useCallback(() => {
-    if (initial !== undefined) {
-      if (!fieldContext.hasValue()) {
-        fieldContext.setValue(initial);
-      }
+  if (initial !== undefined) {
+    if (!fieldContext.hasValue()) {
+      fieldContext.setValue(initial);
     }
-  }, [fieldContext, initial]);
-
-  React.useState(update);
-  React.useEffect(update);
+  }
 
   useValidate(fieldContext, validate);
 
-  return useRender(fieldContext, props);
+  const control = getOnlyChild(children);
+  const { key, errors } = fieldContext.useField() || {};
+  const value = fieldContext.useValue();
+  const dependValues = fieldContext.useFieldsValue(depends);
+  const options = fieldContext.useSelector((root) => ({
+    ...root.options,
+    ...rest,
+  }));
+
+  const data = {
+    children: control,
+    ...{ key, path, initial, value, errors },
+    ...{ depends, dependValues },
+    ...options,
+  };
+
+  const render = children instanceof Function ? children : defaultRender;
+
+  return render(fieldContext, data) as React.ReactElement;
 }

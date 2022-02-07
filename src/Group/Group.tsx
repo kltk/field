@@ -2,8 +2,9 @@ import React from 'react';
 import { FieldMeta } from '../Field/types';
 import { ControlProps } from '../types';
 import { context } from '../utils/context';
+import { RenderOptions } from '../utils/defaultRender';
 import { useGroupContext } from './GroupContext';
-import { GroupContext, GroupOptions } from './types';
+import { GroupContext } from './types';
 import { update } from './update';
 
 const { Provider } = context;
@@ -18,7 +19,7 @@ type GroupPropsBase<State> = {
 
 export type GroupProps<State> = ControlProps<State> &
   GroupPropsBase<State> &
-  GroupOptions;
+  RenderOptions;
 
 export function Group<T>(props: GroupProps<T>) {
   const { context, initial, value, disabled, children = null } = props;

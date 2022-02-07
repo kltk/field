@@ -41,7 +41,7 @@ export function createMethods<T>(context: GroupContext<T>) {
       );
       metas.map((meta) => meta.validate?.());
     },
-    getFieldsValue(paths) {
+    getFieldsValue(paths = []) {
       return mapValues(paths, (path) => context.getFieldValue(path));
     },
     hasFieldValue(path) {

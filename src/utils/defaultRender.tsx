@@ -6,6 +6,13 @@ import { nop } from './nop';
 
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
+export type RenderOptions = {
+  disabled?: boolean;
+  trigger?: string;
+  valueName?: string;
+  normalize?: <Value>(e: Value | InputChangeEvent) => any;
+};
+
 export function defaultNormalize<Value>(e: Value | InputChangeEvent) {
   // 支持 html 事件
   const key = get(e, 'target.type') === 'checkbox' ? 'checked' : 'value';
@@ -14,10 +21,10 @@ export function defaultNormalize<Value>(e: Value | InputChangeEvent) {
 }
 
 export function defaultRender<Value>(context: FieldContext, props: any) {
-  const { control, value, disabled } = props;
+  const { children, value, disabled } = props;
   const { normalize = defaultNormalize } = props;
   const { trigger = 'onChange', valueName = 'value' } = props;
-  const originTrigger = get(control, ['props', trigger], nop);
+  const originTrigger = get(children, ['props', trigger], nop);
 
   function onChange(e: Value | InputChangeEvent) {
     let value;
@@ -39,5 +46,5 @@ export function defaultRender<Value>(context: FieldContext, props: any) {
     [valueName]: value,
     ...(disabled === undefined || disabled === null ? {} : { disabled }),
   };
-  return cloneNode(control, newProps);
+  return cloneNode(children, newProps);
 }

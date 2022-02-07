@@ -1,15 +1,11 @@
 import { Observable } from 'kltk-observable';
 import { FieldMeta, FieldPath, FieldSpec } from '../Field/types';
 import { UniArrObj } from '../types';
+import { RenderOptions } from '../utils/defaultRender';
 
 export type EventType = 'change' | 'invalid' | 'submit';
 
-export type GroupOptions = {
-  /** 禁用表单，支持 `disabled` 的控件会被禁用 */
-  disabled?: boolean;
-};
-
-export type GroupState<T = any, O = GroupOptions> = {
+export type GroupState<T = any, O = RenderOptions> = {
   initial?: T;
   value?: T;
   options?: O;
@@ -35,7 +31,7 @@ type GroupMethods = {
 
   updateField: (spec: FieldSpec, meta: Partial<FieldMeta>) => void;
   validateFields: (specs?: FieldSpec[]) => void | Promise<void>;
-  getFieldsValue: (paths: UniArrObj<FieldPath>) => any;
+  getFieldsValue: (paths?: UniArrObj<FieldPath>) => any;
   hasFieldValue: (path: FieldPath) => boolean;
   registerField: (field: FieldMeta) => () => void;
   unregisterField: (field: FieldMeta) => void;
@@ -44,6 +40,8 @@ type GroupMethods = {
 type GroupContextHook<State> = {
   useSelector: <Return>(getter: (state: State) => Return) => Return;
   useEvent: (type: EventType, listener?: Function) => void;
+  useFieldValue: <Value>(path: FieldPath) => Value;
+  useFieldsValue: (paths?: UniArrObj<FieldPath>) => any;
 };
 
 export type GroupContext<S = any> = Observable<GroupState<S>> &

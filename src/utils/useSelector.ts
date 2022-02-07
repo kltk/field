@@ -26,7 +26,7 @@ export function useSelector<T, R>(
        */
       update();
 
-      return latest.context.subscribe(update);
+      return context.subscribe(update);
     },
     { context, getter, state },
   );
