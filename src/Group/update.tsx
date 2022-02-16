@@ -34,6 +34,14 @@ export function update<State>(
     }
   }
 
+  if (context.state.value === undefined) {
+    if (context.state.initial !== undefined) {
+      context.setState((draft) => {
+        draft.value = draft.initial;
+      });
+    }
+  }
+
   if (options && !isEmpty(options)) {
     if (!shallowEqual(options, context.state.options)) {
       context.setState((draft) => {

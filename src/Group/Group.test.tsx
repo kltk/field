@@ -24,6 +24,7 @@ describe('Group', () => {
       const context = createGroupContext<any>();
       render(<Group context={context} initial={values[0]} />);
       expect(context.state.initial).toBe(values[0]);
+      expect(context.state.value).toBe(values[0]);
     });
 
     test('set value', () => {
@@ -48,6 +49,7 @@ describe('Group', () => {
       );
       rerender(<Group context={context} initial={values[2]} />);
       expect(context.state.initial).toBe(values[2]);
+      expect(context.state.value).toBe(values[1]);
     });
   });
 
