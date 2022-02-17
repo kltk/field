@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash';
+import React from 'react';
 import shallowEqual from 'shallowequal';
 import { RenderOptions } from '../types';
 import { GroupContext } from './types';
@@ -10,7 +11,7 @@ import { GroupContext } from './types';
  * @param value
  * @param options
  */
-export function update<State>(
+export function useUpdate<State>(
   context: GroupContext<State>,
   initial?: State,
   value?: State,
@@ -24,13 +25,20 @@ export function update<State>(
     }
   }
 
-  // 受控模式
-  // 使用浅比较可以在数据正确的情况下减少渲染
+  const ref = React.useRef<State>();
   if (value !== undefined) {
-    if (!shallowEqual(value, context.state.value)) {
-      context.setState((draft) => {
-        draft.value = value;
-      });
+    // 弱受控模式
+    // 使用浅比较可以在数据正确的情况下减少渲染
+    // context.state.value 可能改变
+    // 只在 `props.value` 改变时重新赋值
+    // 防止循环赋值，并减少渲染次数
+    if (!shallowEqual(value, ref.current)) {
+      ref.current = value;
+      if (!shallowEqual(value, context.state.value)) {
+        context.setState((draft) => {
+          draft.value = value;
+        });
+      }
     }
   }
 

@@ -4,7 +4,7 @@ import { ControlProps, RenderOptions } from '../types';
 import { context } from '../utils/context';
 import { useGroupContext } from './GroupContext';
 import { GroupContext } from './types';
-import { update } from './update';
+import { useUpdate } from './update';
 
 const { Provider } = context;
 
@@ -26,7 +26,7 @@ export function Group<T>(props: GroupProps<T>) {
 
   const groupContext = useGroupContext(context, initial);
 
-  update(groupContext, initial, value, { disabled });
+  useUpdate(groupContext, initial, value, { disabled });
 
   groupContext.useEvent('change', onChange);
   groupContext.useEvent('invalid', onInvalid);
