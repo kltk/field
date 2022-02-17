@@ -1,9 +1,9 @@
 import { get, has } from 'lodash';
 import React from 'react';
-import { FieldContext } from '../Field/types';
 import { InputChangeEvent } from '../types';
-import { cloneNode } from './cloneNode';
-import { nop } from './nop';
+import { cloneNode } from '../utils/cloneNode';
+import { nop } from '../utils/nop';
+import { FieldContext } from './types';
 
 export function defaultNormalize<Value>(e: Value | InputChangeEvent) {
   // 支持 html 事件
