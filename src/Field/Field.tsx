@@ -1,4 +1,5 @@
 import React from 'react';
+import shallowEqual from 'shallowequal';
 import { RenderOptions, UniArrObj } from '../types';
 import { context } from '../utils/context';
 import { getOnlyChild } from '../utils/getOnlyChild';
@@ -18,10 +19,14 @@ type FieldPropsBase<Value> = {
 export type FieldProps<Value = any> = FieldPropsBase<Value> & RenderOptions;
 
 export function Field<Value = any>(props: FieldProps<Value>) {
-  const { path = '', initial, validate, depends, children, ...rest } = props;
+  const { path, initial, validate, depends, children, ...rest } = props;
 
   const groupContext = React.useContext(context);
-  const fieldContext = useFieldContext(groupContext, path);
+  const fieldContext = useFieldContext(groupContext);
+
+  if (!shallowEqual(path, fieldContext.getMeta().path)) {
+    fieldContext.updateMeta({ path });
+  }
 
   if (initial !== undefined) {
     if (!fieldContext.hasValue()) {

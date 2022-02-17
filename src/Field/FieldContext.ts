@@ -2,16 +2,13 @@ import { extend } from 'kltk-observable/dist/extend';
 import React from 'react';
 import { GroupContext } from '../Group/types';
 import { castType, CastTypeFn } from '../utils/castType';
-import { FieldContext, FieldPath } from './types';
+import { FieldContext } from './types';
 
 const castContext: CastTypeFn<Partial<FieldContext>> = castType;
 
-export function createFieldContext(
-  group: GroupContext,
-  path: FieldPath,
-): FieldContext {
+export function createFieldContext(group: GroupContext): FieldContext {
   const key = Symbol();
-  group.registerField({ key, path });
+  group.registerField({ key });
 
   const context = {} as FieldContext;
   const methods = castContext({
@@ -22,10 +19,12 @@ export function createFieldContext(
       return group.setField(key, changed);
     },
     getValue() {
-      return group.getFieldValue(path);
+      const { path } = context.getMeta();
+      return group.getFieldValue(path!);
     },
     setValue(value) {
-      return group.setFieldValue(path, value);
+      const { path } = context.getMeta();
+      return group.setFieldValue(path!, value);
     },
 
     updateMeta(changed) {
@@ -35,7 +34,8 @@ export function createFieldContext(
       return context.getMeta()?.validate?.();
     },
     hasValue() {
-      return group.hasFieldValue(path);
+      const { path } = context.getMeta();
+      return group.hasFieldValue(path!);
     },
 
     useField() {
@@ -48,9 +48,6 @@ export function createFieldContext(
   return extend(context, group, methods);
 }
 
-export function useFieldContext<T>(context: GroupContext<T>, path: FieldPath) {
-  return React.useMemo(
-    () => createFieldContext(context, path),
-    [context, path],
-  );
+export function useFieldContext<T>(context: GroupContext<T>) {
+  return React.useMemo(() => createFieldContext(context), [context]);
 }
