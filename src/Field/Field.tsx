@@ -1,7 +1,7 @@
 import React from 'react';
-import { UniArrObj } from '../types';
+import { RenderOptions, UniArrObj } from '../types';
 import { context } from '../utils/context';
-import { defaultRender, RenderOptions } from '../utils/defaultRender';
+import { defaultRender } from '../utils/defaultRender';
 import { getOnlyChild } from '../utils/getOnlyChild';
 import { useFieldContext } from './FieldContext';
 import { FieldPath, FieldRender, FieldValidate } from './types';

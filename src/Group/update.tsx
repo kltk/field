@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import shallowEqual from 'shallowequal';
-import { RenderOptions } from '../utils/defaultRender';
+import { RenderOptions } from '../types';
 import { GroupContext } from './types';
 
 /**

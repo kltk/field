@@ -1,17 +1,9 @@
 import { get, has } from 'lodash';
 import React from 'react';
 import { FieldContext } from '../Field/types';
+import { InputChangeEvent } from '../types';
 import { cloneNode } from './cloneNode';
 import { nop } from './nop';
-
-type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
-
-export type RenderOptions = {
-  disabled?: boolean;
-  trigger?: string;
-  valueName?: string;
-  normalize?: <Value>(e: Value | InputChangeEvent) => any;
-};
 
 export function defaultNormalize<Value>(e: Value | InputChangeEvent) {
   // 支持 html 事件

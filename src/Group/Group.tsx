@@ -1,8 +1,7 @@
 import React from 'react';
 import { FieldMeta } from '../Field/types';
-import { ControlProps } from '../types';
+import { ControlProps, RenderOptions } from '../types';
 import { context } from '../utils/context';
-import { RenderOptions } from '../utils/defaultRender';
 import { useGroupContext } from './GroupContext';
 import { GroupContext } from './types';
 import { update } from './update';

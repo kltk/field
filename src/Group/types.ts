@@ -1,7 +1,6 @@
 import { Observable } from 'kltk-observable';
 import { FieldMeta, FieldPath, FieldSpec } from '../Field/types';
-import { UniArrObj } from '../types';
-import { RenderOptions } from '../utils/defaultRender';
+import { RenderOptions, UniArrObj } from '../types';
 
 export type EventType = 'change' | 'invalid' | 'submit';
 
