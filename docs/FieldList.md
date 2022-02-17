@@ -5,4 +5,3 @@ group:
   title: 组件
 ---
 ## FieldList
-<API src="../src/FieldList.tsx"></API>
