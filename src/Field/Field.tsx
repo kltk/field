@@ -37,7 +37,8 @@ export function Field<Value = any>(props: FieldProps<Value>) {
   useValidate(fieldContext, validate);
 
   const control = getOnlyChild(children);
-  const { key, errors } = fieldContext.useField() || {};
+  const { key } = fieldContext.getMeta();
+  const errors = fieldContext.useErrors();
   const value = fieldContext.useValue();
   const dependValues = fieldContext.useFieldsValue(depends);
   const options = fieldContext.useSelector((root) => ({
@@ -54,5 +55,9 @@ export function Field<Value = any>(props: FieldProps<Value>) {
 
   const render = children instanceof Function ? children : defaultRender;
 
-  return render(fieldContext, data) as React.ReactElement;
+  const nodes = render(fieldContext, data);
+
+  React.useEffect(() => fieldContext.unregister, []);
+
+  return nodes as React.ReactElement;
 }

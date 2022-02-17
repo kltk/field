@@ -32,10 +32,14 @@ export type FieldContext<Value = any> = Assign<
     setMeta: (changed: FieldMeta) => void;
     getValue: () => Value;
     setValue: (value: Value) => void;
+    getErrors: () => (string | Error)[];
+    setErrors: (errors: (string | Error)[]) => void;
     updateMeta: (changed: Partial<FieldMeta>) => void;
     validate: () => void;
     hasValue: () => boolean;
-    useField: () => FieldMeta;
+    useMeta: () => FieldMeta;
     useValue: () => Value;
+    useErrors: () => (string | Error)[];
+    unregister: () => void;
   }
 >;

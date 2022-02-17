@@ -26,6 +26,12 @@ export function createFieldContext(group: GroupContext): FieldContext {
       const { path } = context.getMeta();
       return group.setFieldValue(path!, value);
     },
+    getErrors() {
+      return context.getMeta().errors || [];
+    },
+    setErrors(errors) {
+      return context.updateMeta({ errors });
+    },
 
     updateMeta(changed) {
       return group.updateField(key, changed);
@@ -38,11 +44,18 @@ export function createFieldContext(group: GroupContext): FieldContext {
       return group.hasFieldValue(path!);
     },
 
-    useField() {
+    useMeta() {
       return context.useSelector(() => context.getMeta());
     },
     useValue() {
       return context.useSelector(() => context.getValue());
+    },
+    useErrors() {
+      return context.useSelector(() => context.getErrors());
+    },
+
+    unregister() {
+      return context.unregisterField({ key });
     },
   });
   return extend(context, group, methods);
