@@ -12,6 +12,8 @@ export type ControlProps<T = any> = {
 export type RenderOptions = {
   disabled?: boolean;
   trigger?: string;
+  normalize?:
+    | string
+    | (<Value>(e?: Value | InputChangeEvent) => Value | undefined);
   valueName?: string;
-  normalize?: <Value>(e?: Value | InputChangeEvent) => Value | undefined;
 };
