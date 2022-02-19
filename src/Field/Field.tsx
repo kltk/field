@@ -1,11 +1,9 @@
-import { defaults } from 'lodash';
 import React from 'react';
 import shallowEqual from 'shallowequal';
 import { RenderOptions, UniArrObj } from '../types';
 import { context } from '../utils/context';
-import { getOnlyChild } from '../utils/getOnlyChild';
 import { useFieldContext } from './FieldContext';
-import { defaultRender } from './render';
+import { useDefaultRender } from './render';
 import { FieldPath, FieldRender, FieldValidate } from './types';
 import { useValidate } from './useValidate';
 
@@ -20,7 +18,7 @@ type FieldPropsBase<Value> = {
 export type FieldProps<Value = any> = FieldPropsBase<Value> & RenderOptions;
 
 export function Field<Value = any>(props: FieldProps<Value>) {
-  const { path, initial, validate, depends, children, ...rest } = props;
+  const { path, initial, validate, depends, children } = props;
 
   const groupContext = React.useContext(context);
   const fieldContext = useFieldContext(groupContext);
@@ -36,25 +34,11 @@ export function Field<Value = any>(props: FieldProps<Value>) {
   }
 
   useValidate(fieldContext, validate);
-
-  const control = getOnlyChild(children);
-  const { key } = fieldContext.getMeta();
-  const errors = fieldContext.useErrors();
-  const value = fieldContext.useValue();
   const dependValues = fieldContext.useFieldsValue(depends);
-  const globalOptions = fieldContext.useSelector((root) => root.options);
-  const options = defaults(rest, globalOptions);
 
-  const data = {
-    children: control,
-    ...{ key, path, initial, value, errors },
-    ...{ depends, dependValues },
-    ...options,
-  };
+  const useRender = children instanceof Function ? children : useDefaultRender;
 
-  const render = children instanceof Function ? children : defaultRender;
-
-  const nodes = render(fieldContext, data);
+  const nodes = useRender(fieldContext, { ...props, dependValues });
 
   React.useEffect(() => fieldContext.unregister, []);
 
