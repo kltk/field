@@ -1,4 +1,3 @@
-import { isEmpty } from 'lodash';
 import React from 'react';
 import shallowEqual from 'shallowequal';
 import { RenderOptions } from '../types';
@@ -50,11 +49,9 @@ export function useUpdate<State>(
     }
   }
 
-  if (options && !isEmpty(options)) {
-    if (!shallowEqual(options, context.state.options)) {
-      context.setState((draft) => {
-        draft.options = options;
-      });
-    }
+  if (!shallowEqual(options, context.state.options)) {
+    context.setState((draft) => {
+      draft.options = options;
+    });
   }
 }

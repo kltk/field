@@ -1,3 +1,4 @@
+import { defaults } from 'lodash';
 import React from 'react';
 import shallowEqual from 'shallowequal';
 import { RenderOptions, UniArrObj } from '../types';
@@ -41,10 +42,8 @@ export function Field<Value = any>(props: FieldProps<Value>) {
   const errors = fieldContext.useErrors();
   const value = fieldContext.useValue();
   const dependValues = fieldContext.useFieldsValue(depends);
-  const options = fieldContext.useSelector((root) => ({
-    ...root.options,
-    ...rest,
-  }));
+  const globalOptions = fieldContext.useSelector((root) => root.options);
+  const options = defaults(rest, globalOptions);
 
   const data = {
     children: control,

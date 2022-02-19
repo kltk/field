@@ -21,12 +21,12 @@ export type GroupProps<State> = ControlProps<State> &
   RenderOptions;
 
 export function Group<T>(props: GroupProps<T>) {
-  const { context, initial, value, disabled, children = null } = props;
-  const { onChange, onInvalid, onSubmit } = props;
+  const { context, initial, value, children = null, ...rest } = props;
+  const { onChange, onInvalid, onSubmit, ...options } = rest;
 
   const groupContext = useGroupContext(context, initial);
 
-  useUpdate(groupContext, initial, value, { disabled });
+  useUpdate(groupContext, initial, value, options);
 
   groupContext.useEvent('change', onChange);
   groupContext.useEvent('invalid', onInvalid);

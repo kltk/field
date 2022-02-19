@@ -1,4 +1,4 @@
-import { get, has } from 'lodash';
+import { defaults, get, has } from 'lodash';
 import React from 'react';
 import { InputChangeEvent } from '../types';
 import { cloneNode } from '../utils/cloneNode';
@@ -13,9 +13,10 @@ export function defaultNormalize<Value>(e: Value | InputChangeEvent) {
 }
 
 export function defaultRender<Value>(context: FieldContext, props: any) {
-  const { children, value, disabled } = props;
-  const { normalize = defaultNormalize } = props;
-  const { trigger = 'onChange', valueName = 'value' } = props;
+  const { key, path, initial, value, errors, ...rest1 } = props;
+  const { normalize = defaultNormalize, ...rest2 } = rest1;
+  const { trigger = 'onChange', valueName = 'value', ...rest3 } = rest2;
+  const { depends, dependValues, children, ...rest4 } = rest3;
   const originTrigger = get(children, ['props', trigger], nop);
 
   function onChange(e: Value | InputChangeEvent) {
@@ -36,7 +37,7 @@ export function defaultRender<Value>(context: FieldContext, props: any) {
   const newProps = {
     [trigger]: onChange,
     [valueName]: value,
-    ...(disabled === undefined || disabled === null ? {} : { disabled }),
   };
+  defaults(newProps, children.props, rest4);
   return cloneNode(children, newProps);
 }
