@@ -1,35 +1,52 @@
 import React from 'react';
 import shallowEqual from 'shallowequal';
 import { GroupContext, GroupState } from '../Group/types';
-import { useEffectWithLatestState } from './useEffectWithLatestState';
 
 export function useSelector<T, R>(
   context: GroupContext<T>,
-  getter: (state: GroupState<T>) => R,
+  selector: (state: GroupState<T>) => R,
 ) {
-  const [state, setState] = React.useState(() => getter(context.state));
-
-  useEffectWithLatestState(
-    (latest) => {
-      const update = () => {
-        const { context, getter, state } = latest;
-        const newState = getter(context.state);
-        if (!shallowEqual(newState, state)) {
-          setState(newState);
-        }
-      };
-
-      /**
-       * effect 在渲染完成后执行
-       * 中间可能有其它地方修改数据
-       * 这里检测下数据有没有变更
-       */
-      update();
-
-      return context.subscribe(update);
+  const [[state], forceUpdate] = React.useState(() => [
+    {
+      context,
+      selector,
+      value: selector(context.state),
+      waitForRender: true,
+      unmounted: false,
     },
-    { context, getter, state },
-  );
+  ]);
+  state.selector = selector;
+  state.waitForRender = false;
 
-  return state;
+  React.useEffect(() => () => void (state.unmounted = true), []);
+
+  React.useEffect(() => {
+    const update = async () => {
+      const { context, selector } = state;
+      const newValue = selector(context.state);
+
+      if (shallowEqual(state.value, newValue)) return;
+      state.value = newValue;
+
+      if (state.waitForRender) return;
+      state.waitForRender = true;
+
+      await 0;
+
+      if (state.unmounted) return;
+
+      forceUpdate((state) => [...state]);
+    };
+
+    /**
+     * effect 在渲染完成后执行
+     * 中间可能有其它地方修改数据
+     * 这里检测下数据有没有变更
+     */
+    update();
+
+    return context.subscribe(update);
+  }, []);
+
+  return state.value;
 }
