@@ -6,7 +6,7 @@ import { cloneNode } from '../utils/cloneNode';
 import { defaultNormalize } from '../utils/defaultNormalize';
 import { getOnlyChild } from '../utils/getOnlyChild';
 
-type ControlAdapterProps<Value> = ControlProps<Value> & RenderOptions;
+export type ControlAdapterProps<Value> = ControlProps<Value> & RenderOptions;
 
 /**
  * 表单控件适配器
@@ -33,7 +33,7 @@ type ControlAdapterProps<Value> = ControlProps<Value> & RenderOptions;
  * />
  * ```
  */
-class ControlAdapter<Value> extends Component<ControlAdapterProps<Value>> {
+export class ControlAdapter<Value> extends Component<ControlAdapterProps<Value>> {
   static defaultProps = {
     trigger: 'onChange',
     normalize: defaultNormalize,
@@ -101,5 +101,3 @@ class ControlAdapter<Value> extends Component<ControlAdapterProps<Value>> {
     return cloneNode(control, newProps);
   }
 }
-
-export default ControlAdapter;

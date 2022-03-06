@@ -2,7 +2,7 @@ import { defaults } from 'lodash';
 import React from 'react';
 import { FieldProps } from '../Field/Field';
 import { getOnlyChild } from '../utils/getOnlyChild';
-import ControlAdapter from './ControlAdapter';
+import { ControlAdapter } from './ControlAdapter';
 import { FieldContext } from './types';
 
 type RenderData = FieldProps & { dependValues: any };
