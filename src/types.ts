@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type CastArray<T> = T | T[];
 
 export type UniArrObj<T> = Record<keyof any, T> | T[];
