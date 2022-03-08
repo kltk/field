@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/docs/node_modules
 /npm-debug.log*
 /yarn-error.log
 /yarn.lock
@@ -9,7 +10,7 @@
 
 # production
 /dist
-/docs-dist
+/docs/dist
 
 # misc
 .DS_Store
