@@ -6,12 +6,15 @@ export type FieldPath = CastArray<keyof any>;
 
 export type FieldSpec = symbol | FieldPath;
 
-export type FieldValidate<Value = any> = (
-  context: FieldContext,
+export type FieldValidate<Value, Options> = (
+  context: FieldContext<Value, Options>,
   value: Value,
 ) => void | Promise<void>;
 
-export type FieldRender = (context: FieldContext, meta: any) => React.ReactNode;
+export type FieldRender<O extends { dependValues?: any }, Value = any> = (
+  context: FieldContext<Value, O>,
+  meta: O,
+) => React.ReactNode;
 
 export type FieldMeta<Value = any> = {
   /** 一个字段同时有多个控制组件时用于关联状态和组件 */
@@ -25,8 +28,8 @@ export type FieldMeta<Value = any> = {
   errors?: (string | Error)[];
 };
 
-export type FieldContext<Value = any> = Assign<
-  GroupContext,
+export type FieldContext<Value = any, Options = {}> = Assign<
+  GroupContext<any, Options>,
   {
     getMeta: () => FieldMeta;
     setMeta: (changed: FieldMeta) => void;

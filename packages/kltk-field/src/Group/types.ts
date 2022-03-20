@@ -1,13 +1,14 @@
 import { Observable } from 'kltk-observable';
-import { FieldMeta, FieldPath, FieldSpec } from '../Field/types';
-import { RenderOptions, UniArrObj } from '../types';
+import { FieldMeta, FieldPath, FieldRender, FieldSpec } from '../Field/types';
+import { UniArrObj } from '../types';
 
 export type EventType = 'change' | 'invalid' | 'submit';
 
-export type GroupState<T = any, O = RenderOptions> = {
-  initial?: T;
-  value?: T;
-  options?: O;
+export type GroupState<Value = any, Options = {}> = {
+  initial: Value;
+  value: Value;
+  render?: FieldRender<Options>;
+  options?: Options;
   meta: FieldMeta[];
 };
 
@@ -36,14 +37,18 @@ type GroupMethods = {
   unregisterField: (field: FieldMeta) => void;
 };
 
-type GroupContextHook<State> = {
-  useSelector: <Return>(getter: (state: State) => Return) => Return;
+type GroupContextHook<State, Options> = {
+  useSelector: <Return>(
+    getter: (state: GroupState<State, Options>) => Return,
+  ) => Return;
   useEvent: (type: EventType, listener?: Function) => void;
   useFieldValue: <Value>(path: FieldPath) => Value;
   useFieldsValue: (paths?: UniArrObj<FieldPath>) => any;
 };
 
-export type GroupContext<S = any> = Observable<GroupState<S>> &
+export type GroupContext<Value = any, Options = {}> = Observable<
+  GroupState<Value, Options>
+> &
   GroupContextEmitter &
   GroupMethods &
-  GroupContextHook<GroupState<S>>;
+  GroupContextHook<Value, Options>;

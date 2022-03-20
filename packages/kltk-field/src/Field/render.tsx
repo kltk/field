@@ -3,11 +3,11 @@ import React from 'react';
 import { FieldProps } from '../Field/Field';
 import { getOnlyChild } from '../utils/getOnlyChild';
 import { ControlAdapter } from './ControlAdapter';
-import { FieldContext } from './types';
+import { FieldRender } from './types';
 
-type RenderData = FieldProps & { dependValues: any };
+type RenderData = FieldProps<any, any> & { dependValues?: any };
 
-export function useDefaultRender(context: FieldContext, data: RenderData) {
+export const useDefaultRender: FieldRender<RenderData> = (context, data) => {
   const { path, initial, validate, ...rest } = data;
   const { depends, dependValues, children, ...options } = rest;
 
@@ -25,4 +25,4 @@ export function useDefaultRender(context: FieldContext, data: RenderData) {
       {control}
     </ControlAdapter>
   );
-}
+};

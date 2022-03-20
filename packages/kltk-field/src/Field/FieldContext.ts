@@ -1,17 +1,16 @@
 import { extend } from 'kltk-observable/dist/extend';
 import React from 'react';
 import { GroupContext } from '../Group/types';
-import { castType, CastTypeFn } from '../utils/castType';
 import { FieldContext } from './types';
 
-const castContext: CastTypeFn<Partial<FieldContext>> = castType;
-
-export function createFieldContext(group: GroupContext): FieldContext {
+export function createFieldContext<T, O>(
+  group: GroupContext<T, O>,
+): FieldContext<T, O> {
   const key = Symbol();
   group.registerField({ key });
 
-  const context = {} as FieldContext;
-  const methods = castContext({
+  const context = {} as FieldContext<T, O>;
+  const methods = {
     getMeta() {
       return group.getField(key)!;
     },
@@ -57,10 +56,10 @@ export function createFieldContext(group: GroupContext): FieldContext {
     unregister() {
       return context.unregisterField({ key });
     },
-  });
+  } as FieldContext<T, O>;
   return extend(context, group, methods);
 }
 
-export function useFieldContext<T>(context: GroupContext<T>) {
+export function useFieldContext<T, O>(context: GroupContext<T, O>) {
   return React.useMemo(() => createFieldContext(context), [context]);
 }

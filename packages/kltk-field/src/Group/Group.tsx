@@ -1,6 +1,6 @@
 import React from 'react';
-import { FieldMeta } from '../Field/types';
-import { ControlProps, RenderOptions } from '../types';
+import { FieldMeta, FieldRender } from '../Field/types';
+import { ControlProps } from '../types';
 import { context } from '../utils/context';
 import { useGroupContext } from './GroupContext';
 import { GroupContext } from './types';
@@ -8,25 +8,26 @@ import { useUpdate } from './update';
 
 const { Provider } = context;
 
-type GroupPropsBase<State> = {
-  context?: GroupContext<State>;
+type GroupPropsBase<State, Options> = {
+  context?: GroupContext<State, Options>;
   initial?: State;
   onInvalid?: (errorFields: FieldMeta[]) => void | Promise<void>;
   onSubmit?: (values: State) => void | Promise<void>;
+  render?: FieldRender<Options>;
   children?: React.ReactNode;
 };
 
-export type GroupProps<State> = ControlProps<State> &
-  GroupPropsBase<State> &
-  RenderOptions;
+export type GroupProps<State, Options> = ControlProps<State> &
+  GroupPropsBase<State, Options> &
+  Options;
 
-export function Group<T>(props: GroupProps<T>) {
+export function Group<T, O>(props: GroupProps<T, O>) {
   const { context, initial, value, children = null, ...rest } = props;
-  const { onChange, onInvalid, onSubmit, ...options } = rest;
+  const { onChange, onInvalid, onSubmit, render, ...options } = rest;
 
   const groupContext = useGroupContext(context);
 
-  useUpdate(groupContext, initial, value, options);
+  useUpdate(groupContext, initial, value, render, options as O);
 
   groupContext.useEvent('change', onChange);
   groupContext.useEvent('invalid', onInvalid);

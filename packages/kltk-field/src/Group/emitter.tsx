@@ -1,7 +1,6 @@
-import { castContext } from './castContext';
-import { EventType } from './types';
+import { EventType, GroupContext } from './types';
 
-export function createEmitter() {
+export function createEmitter<T, O>() {
   const listenersMap = {
     change: new Set<Function>(),
     invalid: new Set<Function>(),
@@ -13,7 +12,8 @@ export function createEmitter() {
     return Promise.all(listeners.map((listener) => listener(...rest)));
   }
 
-  return castContext({
+  return {
+    ...({} as GroupContext<T, O>),
     on(type, listener) {
       const listeners = listenersMap[type];
       listeners.add(listener);
@@ -28,5 +28,5 @@ export function createEmitter() {
       }
     },
     emit,
-  });
+  } as GroupContext<T, O>;
 }

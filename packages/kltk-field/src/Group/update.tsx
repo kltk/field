@@ -1,6 +1,6 @@
 import React from 'react';
 import shallowEqual from 'shallowequal';
-import { RenderOptions } from '../types';
+import { FieldRender } from '..';
 import { GroupContext } from './types';
 
 /**
@@ -10,11 +10,12 @@ import { GroupContext } from './types';
  * @param value
  * @param options
  */
-export function useUpdate<State>(
-  context: GroupContext<State>,
+export function useUpdate<State, Options>(
+  context: GroupContext<State, Options>,
   initial?: State,
   value?: State,
-  options?: RenderOptions,
+  render?: FieldRender<Options>,
+  options?: Options,
 ) {
   if (initial !== undefined) {
     if (initial !== context.state.initial) {
@@ -47,6 +48,12 @@ export function useUpdate<State>(
         draft.value = draft.initial;
       });
     }
+  }
+
+  if (render !== context.state.render) {
+    context.setState((draft) => {
+      draft.render = render;
+    });
   }
 
   if (!shallowEqual(options, context.state.options)) {

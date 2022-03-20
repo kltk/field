@@ -1,10 +1,11 @@
 import React from 'react';
 import { useSelector } from '../utils/useSelector';
-import { castContext } from './castContext';
 import { GroupContext } from './types';
 
-export function createHooks<State>(context: GroupContext<State>) {
-  return castContext({
+export function createHooks<State, Options>(
+  context: GroupContext<State, Options>,
+) {
+  return {
     /**
      * 订阅数据变化
      * 使用[浅比较shallowequal](https://www.npmjs.com/package/shallowequal)
@@ -38,5 +39,5 @@ export function createHooks<State>(context: GroupContext<State>) {
     useFieldsValue(specs) {
       return context.useSelector(() => context.getFieldsValue(specs));
     },
-  });
+  } as GroupContext<State, Options>;
 }

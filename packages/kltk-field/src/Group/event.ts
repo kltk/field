@@ -1,8 +1,7 @@
-import { castContext } from './castContext';
 import { GroupContext } from './types';
 
-export function createEvent<T>(context: GroupContext<T>) {
-  return castContext({
+export function createEvent<T, O>(context: GroupContext<T, O>) {
+  return {
     reset() {
       context.setState((state) => {
         state.value = state.initial;
@@ -23,5 +22,5 @@ export function createEvent<T>(context: GroupContext<T>) {
         await context.emit('submit', values);
       }
     },
-  });
+  } as GroupContext<T, O>;
 }

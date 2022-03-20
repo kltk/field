@@ -21,20 +21,20 @@ describe('Group', () => {
     });
 
     test('set initial', () => {
-      const context = createGroupContext<any>();
+      const context = createGroupContext();
       render(<Group context={context} initial={values[0]} />);
       expect(context.state.initial).toBe(values[0]);
       expect(context.state.value).toBe(values[0]);
     });
 
     test('set value', () => {
-      const context = createGroupContext<any>();
+      const context = createGroupContext();
       render(<Group context={context} value={values[0]} />);
       expect(context.state.value).toBe(values[0]);
     });
 
     test('set initial & value', () => {
-      const context = createGroupContext<any>();
+      const context = createGroupContext();
       render(
         <Group context={context} initial={values[0]} value={shadows[0]} />,
       );
@@ -43,7 +43,7 @@ describe('Group', () => {
     });
 
     test('update initial with rerender', () => {
-      const context = createGroupContext<any>();
+      const context = createGroupContext();
       const { rerender } = render(
         <Group context={context} initial={values[1]} />,
       );
@@ -55,7 +55,7 @@ describe('Group', () => {
 
   describe('event', () => {
     test('update value with rerender', () => {
-      const context = createGroupContext<any>();
+      const context = createGroupContext();
       const value1 = { value: 1 };
       const value2 = { value: 2 };
       const { rerender } = render(<Group context={context} value={value1} />);
@@ -64,7 +64,7 @@ describe('Group', () => {
     });
 
     test('render with onChange', () => {
-      const context = createGroupContext<any>();
+      const context = createGroupContext<{ value: number }, {}>();
       const value1 = { value: 1 };
       const value2 = { value: 2 };
       const fn = jest.fn();

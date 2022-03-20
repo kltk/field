@@ -3,23 +3,16 @@ import React from 'react';
 import { Group, GroupProps } from './Group/Group';
 import { useGroupContext } from './Group/GroupContext';
 
-export type FormProps<T> = Assign<
+export type FormProps<T, O> = Assign<
   React.DOMAttributes<HTMLFormElement>,
-  GroupProps<T>
->;
+  GroupProps<T, {}>
+> & { options?: O };
 
-export function Form<T>(props: FormProps<T>) {
-  const { context, initial, value, disabled, children, ...rest } = props;
+export function Form<T, O>(props: FormProps<T, O>) {
+  const { context, initial, value, options, children, ...rest } = props;
   const { onChange, onReset, onInvalid, onSubmit, ...formRest } = rest;
   const groupContext = useGroupContext(context);
-  const groupProps = {
-    initial,
-    value,
-    disabled,
-    onChange,
-    onInvalid,
-    onSubmit,
-  };
+  const groupProps = { initial, value, onChange, onInvalid, onSubmit };
   const handleReset = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -39,7 +32,7 @@ export function Form<T>(props: FormProps<T>) {
   );
   return (
     <form onReset={handleReset} onSubmit={handleSubmit} {...formRest}>
-      <Group context={groupContext} {...groupProps}>
+      <Group context={groupContext} {...groupProps} {...options}>
         {children}
       </Group>
     </form>

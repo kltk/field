@@ -1,9 +1,9 @@
 import React from 'react';
 import { FieldContext, FieldValidate } from './types';
 
-export function useValidate<Value>(
-  context: FieldContext,
-  validate?: FieldValidate<Value>,
+export function useValidate<Value, Options>(
+  context: FieldContext<Value, Options>,
+  validate?: FieldValidate<Value, Options>,
 ) {
   React.useEffect(() => {
     context.updateMeta({

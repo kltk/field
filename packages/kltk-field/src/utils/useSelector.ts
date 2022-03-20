@@ -2,9 +2,9 @@ import React from 'react';
 import shallowEqual from 'shallowequal';
 import { GroupContext, GroupState } from '../Group/types';
 
-export function useSelector<T, R>(
-  context: GroupContext<T>,
-  selector: (state: GroupState<T>) => R,
+export function useSelector<T, O, R>(
+  context: GroupContext<T, O>,
+  selector: (state: GroupState<T, O>) => R,
 ) {
   const [[state], forceUpdate] = React.useState(() => [
     {

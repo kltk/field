@@ -1,12 +1,11 @@
 import { filter, find, findIndex, flatMap, get, has, set } from 'lodash';
 import { mapValues } from '../utils/mapValues';
-import { castContext } from './castContext';
 import { fieldMatches } from './fieldMatches';
 import { toValuePath } from './toValuePath';
 import { GroupContext } from './types';
 
-export function createMethods<T>(context: GroupContext<T>) {
-  return castContext({
+export function createMethods<T, Options>(context: GroupContext<T, Options>) {
+  return {
     getField(spec) {
       return find(context.state.meta, fieldMatches(spec));
     },
@@ -59,5 +58,5 @@ export function createMethods<T>(context: GroupContext<T>) {
         root.meta = filter(root.meta, (meta) => !match(meta));
       });
     },
-  });
+  } as GroupContext<T, Options>;
 }

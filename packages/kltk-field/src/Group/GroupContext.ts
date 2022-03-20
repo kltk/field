@@ -10,20 +10,30 @@ import { GroupContext, GroupState } from './types';
 
 const sym = Symbol('GroupContext');
 
-type ContextOrState<T> = GroupContext<T> | Partial<GroupState<T>>;
+type ContextOrState<T, O> = GroupContext<T, O> | Partial<GroupState<T, O>>;
 
-function isGroupContext<T>(data?: ContextOrState<T>): data is GroupContext<T> {
+function isGroupContext<T, O>(
+  data?: ContextOrState<T, O>,
+): data is GroupContext<T, O> {
   if (!data) return false;
   return sym in data;
 }
 
-export function createGroupContext<T>(
-  data?: Partial<GroupState<T>>,
-): GroupContext<T> {
+export function createGroupContext<T, O>(
+  data?: Partial<GroupState<T, O>>,
+): GroupContext<T, O> {
   const { initial } = data || {};
   const { value = initial } = data || {};
-  const state: GroupState<T> = { initial, value, meta: [] };
-  const context = observable(state) as GroupContext<T>;
+  const { options, render } = data || {};
+
+  const state: GroupState<T | undefined, O> = {
+    initial,
+    value,
+    options,
+    render,
+    meta: [],
+  };
+  const context = observable(state) as GroupContext<T, O>;
   Object.defineProperty(context, sym, {
     configurable: false,
     enumerable: false,
@@ -46,7 +56,7 @@ export function createGroupContext<T>(
   return extend(context, emitter, event, methods, hooks);
 }
 
-export function useGroupContext<T>(data?: ContextOrState<T>) {
+export function useGroupContext<T, O>(data?: ContextOrState<T, O>) {
   return React.useState(() =>
     isGroupContext(data) ? data : createGroupContext(data),
   )[0];
