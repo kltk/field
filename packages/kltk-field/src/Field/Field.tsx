@@ -21,6 +21,11 @@ export function Field<Value = any>(props: FieldProps<Value>) {
   const { path, initial, validate, depends, children } = props;
 
   const groupContext = React.useContext(context);
+  if (!groupContext) {
+    throw new Error(
+      'Can not get GroupContext, Field must be a descendants of the Form/Group.',
+    );
+  }
   const fieldContext = useFieldContext(groupContext);
 
   if (!shallowEqual(path, fieldContext.getMeta().path)) {

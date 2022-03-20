@@ -1,4 +1,4 @@
 import React from 'react';
-import { createGroupContext } from '../Group/GroupContext';
+import { GroupContext } from '..';
 
-export const context = React.createContext(createGroupContext(Object()));
+export const context = React.createContext<GroupContext<any> | null>(null);

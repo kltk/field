@@ -14,7 +14,7 @@ const shadows = JSON.parse(JSON.stringify(values));
 describe('Group', () => {
   describe('initial & state must shallow equal', () => {
     test('empty', () => {
-      const context = createGroupContext(values[0]);
+      const context = createGroupContext({ initial: values[0] });
       render(<Group context={context} />);
       expect(context.state.initial).toBe(values[0]);
       expect(context.state.value).toBe(values[0]);

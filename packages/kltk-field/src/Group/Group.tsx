@@ -24,7 +24,7 @@ export function Group<T>(props: GroupProps<T>) {
   const { context, initial, value, children = null, ...rest } = props;
   const { onChange, onInvalid, onSubmit, ...options } = rest;
 
-  const groupContext = useGroupContext(context, initial);
+  const groupContext = useGroupContext(context);
 
   useUpdate(groupContext, initial, value, options);
 

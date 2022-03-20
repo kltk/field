@@ -8,9 +8,28 @@ import { createHooks } from './hooks';
 import { createMethods } from './methods';
 import { GroupContext, GroupState } from './types';
 
-export function createGroupContext<T>(initial?: T): GroupContext<T> {
-  const state: GroupState<T> = { initial, value: initial, meta: [] };
+const sym = Symbol('GroupContext');
+
+type ContextOrState<T> = GroupContext<T> | Partial<GroupState<T>>;
+
+function isGroupContext<T>(data?: ContextOrState<T>): data is GroupContext<T> {
+  if (!data) return false;
+  return sym in data;
+}
+
+export function createGroupContext<T>(
+  data?: Partial<GroupState<T>>,
+): GroupContext<T> {
+  const { initial } = data || {};
+  const { value = initial } = data || {};
+  const state: GroupState<T> = { initial, value, meta: [] };
   const context = observable(state) as GroupContext<T>;
+  Object.defineProperty(context, sym, {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: true,
+  });
   const emitter = createEmitter();
   const event = createEvent(context);
   const methods = createMethods(context);
@@ -27,6 +46,8 @@ export function createGroupContext<T>(initial?: T): GroupContext<T> {
   return extend(context, emitter, event, methods, hooks);
 }
 
-export function useGroupContext<T>(context?: GroupContext<T>, initial?: T) {
-  return React.useState(() => context ?? createGroupContext<T>(initial))[0];
+export function useGroupContext<T>(data?: ContextOrState<T>) {
+  return React.useState(() =>
+    isGroupContext(data) ? data : createGroupContext(data),
+  )[0];
 }
