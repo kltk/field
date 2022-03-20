@@ -7,4 +7,4 @@ group:
 
 ## Group
 
-<API src="../src/Group/Group.tsx"></API>
+<API src="kltk-field/src/Group/Group.tsx"></API>

@@ -33,7 +33,9 @@ export type ControlAdapterProps<Value> = ControlProps<Value> & RenderOptions;
  * />
  * ```
  */
-export class ControlAdapter<Value> extends Component<ControlAdapterProps<Value>> {
+export class ControlAdapter<Value> extends Component<
+  ControlAdapterProps<Value>
+> {
   static defaultProps = {
     trigger: 'onChange',
     normalize: defaultNormalize,
