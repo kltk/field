@@ -1,18 +1,33 @@
 {
-  "private": true,
   "name": "kltk-field",
   "description": "Not Just Forms",
   "version": "0.1.0",
-  "scripts": {
-    "build": "father-build",
-    "release": "npm run build && npm publish",
-    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
-    "test": "umi-test",
-    "test:coverage": "umi-test --coverage"
+  "keywords": [
+    "component",
+    "field",
+    "form",
+    "react"
+  ],
+  "author": "kltk <haig8@msn.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kltk/field"
   },
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "!dist/**/*.test.d.ts"
+  ],
+  "scripts": {
+    "build": "father-build",
+    "release": "npm run build && npm publish",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage"
+  },
   "dependencies": {
     "@types/lodash": "^4.14.172",
     "@types/shallowequal": "^1.1.1",
