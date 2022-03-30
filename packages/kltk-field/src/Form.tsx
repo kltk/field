@@ -1,18 +1,15 @@
-import { Assign } from 'kltk-observable/dist/types';
 import React from 'react';
 import { Group, GroupProps } from './Group/Group';
 import { useGroupContext } from './Group/GroupContext';
 
-export type FormProps<T, O> = Assign<
-  React.DOMAttributes<HTMLFormElement>,
-  GroupProps<T, {}>
-> & { options?: O };
+export type FormProps<T, O> = GroupProps<T, O> & {
+  formProps?: React.DOMAttributes<HTMLFormElement>;
+  onReset?: React.FormEventHandler<HTMLFormElement>;
+};
 
 export function Form<T, O>(props: FormProps<T, O>) {
-  const { context, initial, value, options, children, ...rest } = props;
-  const { onChange, onReset, onInvalid, onSubmit, ...formRest } = rest;
+  const { context, formProps, onReset, ...groupProps } = props;
   const groupContext = useGroupContext(context);
-  const groupProps = { initial, value, onChange, onInvalid, onSubmit };
   const handleReset = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -31,10 +28,8 @@ export function Form<T, O>(props: FormProps<T, O>) {
     [groupContext],
   );
   return (
-    <form onReset={handleReset} onSubmit={handleSubmit} {...formRest}>
-      <Group context={groupContext} {...groupProps} {...options}>
-        {children}
-      </Group>
+    <form onReset={handleReset} onSubmit={handleSubmit} {...formProps}>
+      <Group {...(groupProps as GroupProps<T, O>)} context={groupContext} />
     </form>
   );
 }
