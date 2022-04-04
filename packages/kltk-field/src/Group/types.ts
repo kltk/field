@@ -1,5 +1,5 @@
 import { Observable } from 'kltk-observable';
-import { FieldMeta, FieldPath, FieldRender, FieldSpec } from '../Field/types';
+import { FieldError, FieldMeta, FieldPath, FieldRender, FieldSpec } from '../Field/types'; // prettier-ignore
 import { UniArrObj } from '../types';
 
 export type EventType = 'change' | 'invalid' | 'submit';
@@ -26,8 +26,8 @@ type GroupMethods = {
   setField: (spec: FieldSpec, meta: FieldMeta) => void;
   getFieldValue: <Value>(path: FieldPath) => Value;
   setFieldValue: <Value>(path: FieldPath, value: Value) => void;
-  getFieldErrors: (spec: FieldSpec) => (string | Error)[];
-  setFieldErrors: (spec: FieldSpec, errors: (string | Error)[]) => void;
+  getFieldErrors: (spec: FieldSpec) => FieldError[];
+  setFieldErrors: (spec: FieldSpec, errors: FieldError[]) => void;
 
   updateField: (spec: FieldSpec, meta: Partial<FieldMeta>) => void;
   validateFields: (specs?: FieldSpec[]) => void | Promise<void>;
