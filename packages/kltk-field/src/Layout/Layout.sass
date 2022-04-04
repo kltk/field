@@ -1,0 +1,71 @@
+$kltk-prefix: ".kltk"
+
+$horizontal: $kltk-prefix + "-horizontal"
+$vertical: $kltk-prefix + "-vertical"
+$inline: $kltk-prefix + "-inline"
+
+$field: $kltk-prefix + "-field"
+$label: $kltk-prefix + "-label"
+$control: $kltk-prefix + "-control"
+
+$colon: $kltk-prefix + "-colon:after"
+$required: $kltk-prefix + "-required:before"
+$error: $kltk-prefix + "-error"
+
+$gap-xss: 4px // 4px
+$gap-xs: $gap-xss*2 // 8px
+$gap-sm: $gap-xss*3 // 12px
+$gap-md: $gap-xss*4 // 16px
+$gap-lg: $gap-xss*6 // 24px
+
+#{$field}#{$horizontal}
+  display: block
+  margin-bottom: $gap-md
+
+  &:last-of-type
+    margin-bottom: 0
+
+  #{$label}
+    display: block
+
+  #{$control}
+    display: block
+
+#{$field}#{$vertical}
+  display: flex
+  margin-bottom: $gap-md
+
+  &:last-of-type
+    margin-bottom: 0
+
+  #{$label}
+    display: inline-block
+    flex: 0 30%
+    text-align: right
+
+  #{$control}
+    display: inline-block
+    flex: auto
+
+#{$field}#{$inline}
+  display: inline-block
+  margin-right: $gap-md
+
+  &:last-of-type
+    margin-right: 0
+
+#{$label}#{$colon}
+  content: ':'
+  display: inline-block
+  margin-right: $gap-xss
+  font-family: SimSun, sans-serif
+
+#{$label}#{$required}
+  content: '*'
+  display: inline-block
+  margin-right: $gap-xss
+  color: red
+  font-family: SimSun, sans-serif
+
+#{$error}
+  color: red

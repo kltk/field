@@ -1,10 +1,10 @@
 import { Observable } from 'kltk-observable';
 import { FieldError, FieldMeta, FieldPath, FieldRender, FieldSpec } from '../Field/types'; // prettier-ignore
-import { UniArrObj } from '../types';
+import { LayoutOptions, RenderOptions, UniArrObj } from '../types';
 
 export type EventType = 'change' | 'invalid' | 'submit';
 
-export type GroupState<Value = any, Options = {}> = {
+export type GroupState<Value = any, Options = RenderOptions & LayoutOptions> = {
   initial: Value;
   value: Value;
   render?: FieldRender<Options>;

@@ -2,6 +2,7 @@ import { observable } from 'kltk-observable';
 import { extend } from 'kltk-observable/dist/extend';
 import React from 'react';
 import shallowEqual from 'shallowequal';
+import { LayoutOptions, RenderOptions } from '../types';
 import { createEmitter } from './emitter';
 import { createEvent } from './event';
 import { createHooks } from './hooks';
@@ -56,7 +57,9 @@ export function createGroupContext<T, O>(
   return extend(context, emitter, event, methods, hooks);
 }
 
-export function useGroupContext<T, O>(data?: ContextOrState<T, O>) {
+export function useGroupContext<T = any, O = RenderOptions & LayoutOptions>(
+  data?: ContextOrState<T, O>,
+) {
   return React.useState(() =>
     isGroupContext(data) ? data : createGroupContext(data),
   )[0];

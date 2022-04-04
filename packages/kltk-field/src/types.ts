@@ -1,4 +1,5 @@
 import React from 'react';
+import { FieldError } from './Field';
 
 export type CastArray<T> = T | T[];
 
@@ -18,4 +19,13 @@ export type RenderOptions = {
     | string
     | (<Value>(e?: Value | InputChangeEvent) => Value | undefined);
   valueName?: string;
+};
+
+export type LayoutOptions = {
+  layout?: string | null;
+  required?: boolean;
+  label?: string;
+  colon?: boolean;
+  description?: string;
+  errors?: FieldError[];
 };

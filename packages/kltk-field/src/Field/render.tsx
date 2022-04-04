@@ -1,6 +1,7 @@
 import { defaults } from 'lodash';
 import React from 'react';
 import { FieldProps } from '../Field/Field';
+import { Layout } from '../Layout/Layout';
 import { getOnlyChild } from '../utils/getOnlyChild';
 import { ControlAdapter } from './ControlAdapter';
 import { FieldRender } from './types';
@@ -20,9 +21,22 @@ export const useDefaultRender: FieldRender<RenderData> = (context, data) => {
 
   if (!React.isValidElement(control)) return children ?? null;
 
-  return (
-    <ControlAdapter value={value} onChange={context.setValue} {...options}>
+  const { disabled, trigger, normalize, valueName, ...layoutProps } = options;
+  const adapterProps = { disabled, trigger, normalize, valueName, value };
+
+  const node = (
+    <ControlAdapter {...adapterProps} onChange={context.setValue}>
       {control}
     </ControlAdapter>
+  );
+
+  if (layoutProps.layout === null) {
+    return node;
+  }
+
+  return (
+    <Layout {...layoutProps} errors={errors}>
+      {node}
+    </Layout>
   );
 };

@@ -15,9 +15,9 @@ export type FieldValidate<Value, Options> = (
   value: Value,
 ) => void | Promise<void>;
 
-export type FieldRender<O extends { dependValues?: any }, Value = any> = (
+export type FieldRender<O, Value = any> = (
   context: FieldContext<Value, O>,
-  meta: O,
+  meta: O & { dependValues?: any },
 ) => React.ReactNode;
 
 export type FieldMeta<Value = any> = {
