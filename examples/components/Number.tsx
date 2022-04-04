@@ -1,17 +1,14 @@
-import { Field, Group } from 'kltk-field';
+import { ControlProps, Field, Group } from 'kltk-field';
 import React from 'react';
 import Input from './Input';
 import Step from './Step';
 
-type NumberProps = {
-  value?: number;
-  onChange?: (changed?: number) => void;
-};
+type NumberProps = ControlProps<number>;
 
 function Number(props: NumberProps) {
   const { value, onChange } = props;
   return (
-    <Group value={value} onChange={onChange}>
+    <Group value={value} onChange={onChange} layout={null}>
       <Field path="value">
         <Step step={-1}>-</Step>
       </Field>

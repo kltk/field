@@ -3,8 +3,6 @@ import React from 'react';
 import Input from '../components/Input';
 
 function Example() {
-  const [disabled, setDisabled] = React.useState(false);
-
   const handleInvalid = (errorFields: any) => {
     alert(
       errorFields.map(({ errors = [] }: any) =>
@@ -19,16 +17,18 @@ function Example() {
 
   const validate = (context: any, value: any) => {
     if (!value) {
-      throw 'username is required';
+      throw 'input is required';
     }
   };
 
   return (
-    <Form disabled={disabled} onInvalid={handleInvalid} onSubmit={handleSubmit}>
-      <Field path="username" validate={validate}>
-        <Input placeholder="username" />
+    <Form onInvalid={handleInvalid} onSubmit={handleSubmit}>
+      <Field path="input" label="输入框" validate={validate}>
+        <Input placeholder="input" />
       </Field>
-      <button type="submit">submit</button>
+      <Field>
+        <button type="submit">提交</button>
+      </Field>
     </Form>
   );
 }

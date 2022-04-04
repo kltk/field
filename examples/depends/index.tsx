@@ -1,22 +1,31 @@
-import { Field, Form, useGroupContext } from 'kltk-field';
+import { Field, Form } from 'kltk-field';
 import React from 'react';
 import Dump from '../components/Dump';
-import Number from '../components/Number';
+import Input from '../components/Input';
+import Radio from '../components/Radio';
 
 function Demo() {
-  const context = useGroupContext();
-  const [errorFields, setErrorFields] = React.useState([]);
-
+  const options = [
+    { label: '显示', value: 'true' },
+    { label: '隐藏', value: 'false' },
+  ];
   return (
     <Form>
-      <Field path="number" initial={{ value: 0 }}>
-        <Number />
+      <Field path="show" label="显示输入框" initial="true">
+        <Radio options={options} />
       </Field>
-      <div>
-        <Field>
-          <Dump />
-        </Field>
-      </div>
+      <Field depends={['show']}>
+        {(ctx, data) =>
+          data.dependValues[0] === 'true' && (
+            <Field path="input" label="输入框">
+              <Input />
+            </Field>
+          )
+        }
+      </Field>
+      <Field>
+        <Dump />
+      </Field>
     </Form>
   );
 }

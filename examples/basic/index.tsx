@@ -1,24 +1,23 @@
 import { Field, Form } from 'kltk-field';
 import React from 'react';
+import Dump from '../components/Dump';
 import Input from '../components/Input';
 
 function Example() {
-  const [state, setState] = React.useState();
-
+  const handleSubmit = (values: any) => alert(JSON.stringify(values));
   return (
-    <>
-      <Form
-        onChange={(values: any) => setState(values)}
-        onSubmit={(values: any) => alert(JSON.stringify(values))}
-      >
-        <Field path="username">
-          <Input placeholder="username" />
-        </Field>
-        <button type="submit">submit</button>
-        <button type="reset">reset</button>
-      </Form>
-      <code>{JSON.stringify(state)}</code>
-    </>
+    <Form onSubmit={handleSubmit}>
+      <Field path="username" label="名称">
+        <Input placeholder="username" />
+      </Field>
+      <Field>
+        <button type="submit">提交</button>
+      </Field>
+      {/* Dump 用于展示表单值，实际使用时不需要 */}
+      <Field>
+        <Dump />
+      </Field>
+    </Form>
   );
 }
 
